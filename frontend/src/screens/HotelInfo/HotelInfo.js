@@ -5,6 +5,7 @@ function HotelInfo() {
   const { id } = useParams();
   return (
     <div>HotelInfo {id}</div>
+    
   )
 }
 
