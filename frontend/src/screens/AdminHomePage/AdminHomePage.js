@@ -14,12 +14,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/userAction";
-import Button from "@mui/material/Button";
-import AdminHotelManagement from "../AdminHotelManagement/AdminHotelManagement";
 import Loading from "../../components/Loading";
+import AdminHotelManagement from "../AdminHotelManagement/AdminHotelManagement";
+import AdminPropertyManagement from "../AdminPropertyManagement/AdminPropertyManagement";
+import AdminUserManagement from "../AdminUserManagement/AdminUserManagement";
 import { getHostDetails } from "../../actions/adminAction";
 
 const drawerWidth = 240;
@@ -30,8 +32,11 @@ function AdminHomePage(props) {
   const setAdmin = props.setAdmin;
   const sidebarOptions = [
     "Dashboard",
+    "User Approval",
+    "Hotel Approval",
+    "Property Approval",
     "User Management",
-    "Hotel Management",
+    "Property Management",
     "Blog Management",
   ];
   const navigate = useNavigate();
@@ -67,8 +72,8 @@ function AdminHomePage(props) {
             <ListItemButton
               onClick={() => {
                 setOption(text);
-                if(text === "Hotel Management"){
-                  dispatch(getHostDetails())
+                if (text === "Hotel Management") {
+                  dispatch(getHostDetails());
                 }
               }}
             >
@@ -170,8 +175,11 @@ function AdminHomePage(props) {
         >
           <Toolbar />
           {option === "Dashboard" && "1"}
+          {option === "User Approval" && <AdminUserManagement />}
+          {option === "Hotel Approval" && <AdminHotelManagement />}
+          {option === "Property Approval" && <AdminPropertyManagement />}
           {option === "User Management" && "2"}
-          {option === "Hotel Management" && <AdminHotelManagement />}
+          {option === "Property Management" && "3"}
           {option === "Blog Management" && "4"}
         </Box>
       </>

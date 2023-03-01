@@ -3,10 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const propertyInfoFromStorage = localStorage.getItem("propertyInfo")
   ? JSON.parse(localStorage.getItem("propertyInfo"))
   : null;
+const propertyCurrentFromStorage = localStorage.getItem("propertyCurrent")
+  ? JSON.parse(localStorage.getItem("propertyCurrent"))
+  : null;
 
 const initialState = {
   loading: false,
   propertyInfo: propertyInfoFromStorage,
+  propertyCurrent: propertyCurrentFromStorage,
   error: null,
 };
 const propertyWorkingSlice = createSlice({
@@ -27,6 +31,9 @@ const propertyWorkingSlice = createSlice({
     propertyWorkingLoadingOff: (state, action) => {
       state.loading = false;
     },
+    propertyWorkingCurrentSuccess: (state, action) => {
+      state.propertyCurrent = action.payload;
+    },
   },
 });
 export default propertyWorkingSlice.reducer;
@@ -35,4 +42,5 @@ export const {
   propertyWorkingSuccess,
   propertyWorkingFail,
   propertyWorkingLoadingOff,
+  propertyWorkingCurrentSuccess,
 } = propertyWorkingSlice.actions;

@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import DangerousIcon from "@mui/icons-material/Dangerous";
-import { hostBlock } from "../../actions/adminAction";
+import { propBlock } from "../../actions/adminAction";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -62,22 +62,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "hotelName",
+    id: "propName",
     numeric: false,
     disablePadding: true,
-    label: "Hotel Name",
+    label: "Property Name",
   },
   {
-    id: "adhaar",
+    id: "propType",
     numeric: true,
     disablePadding: false,
-    label: "Adhaar No.",
+    label: "Property Type",
   },
   {
-    id: "user",
+    id: "hostName",
     numeric: true,
     disablePadding: false,
-    label: "User",
+    label: "Host Name",
   },
   {
     id: "Status",
@@ -110,15 +110,6 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          {/* <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          /> */}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -214,9 +205,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 //MAIN COMPONENT!!!
-export default function EnhancedTable() {
-  // const [data, setData] = React.useState([]);
-
+function AdminPropertyManagement() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -225,13 +214,16 @@ export default function EnhancedTable() {
 
   const dispatch = useDispatch();
   const adminInfo = useSelector((state) => state.hotelWorking);
-  const { loading, hostInfo, error } = adminInfo;
+  const {  hostInfo } = adminInfo;
+  const propertyData = useSelector((state) => state.propertyWorking);
+  const { loading, propertyInfo } = propertyData;
 
   // React.useEffect(()=>{
-  //   console.log(hostInfo);
+  //   console.log(propertyInfo);
   // })
-  const HandleBlocks = (userId) => {
-    dispatch(hostBlock(userId));
+
+  const HandleBlocks = (_id) => {
+    dispatch(propBlock(_id));
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -241,7 +233,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = hostInfo.map((n) => n.hotelName);
+      const newSelected = propertyInfo.map((n) => n.hostName);
       setSelected(newSelected);
       return;
     }
@@ -256,11 +248,11 @@ export default function EnhancedTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const isSelected = (hotelName) => selected.indexOf(hotelName) !== -1;
+  const isSelected = (hostName) => selected.indexOf(hostName) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - hostInfo.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - propertyInfo.length) : 0;
 
   return (
     <>
@@ -282,13 +274,13 @@ export default function EnhancedTable() {
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={hostInfo.length}
+                  rowCount={propertyInfo.length}
                 />
                 <TableBody>
-                  {stableSort(hostInfo, getComparator(order, orderBy))
+                  {stableSort(propertyInfo, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const isItemSelected = isSelected(row.hotelName);
+                      const isItemSelected = isSelected(row.hostName);
                       const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
@@ -297,7 +289,7 @@ export default function EnhancedTable() {
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
-                          key={row.hotelName}
+                          key={row.hostName}
                           selected={isItemSelected}
                         >
                           <TableCell padding="checkbox"></TableCell>
@@ -307,12 +299,12 @@ export default function EnhancedTable() {
                             scope="row"
                             padding="none"
                           >
-                            {row.hotelName}
+                            {row.propName}
                           </TableCell>
-                          <TableCell align="right">{row.adhaarno}</TableCell>
-                          <TableCell align="right">{row.user}</TableCell>
+                          <TableCell align="right">{row.propType}</TableCell>
+                          <TableCell align="right">{row.hostName}</TableCell>
                           <TableCell align="right">
-                            {row.blocked ? (
+                            {row.propStatus ? (
                               <DangerousIcon color="error" />
                             ) : (
                               <DoneOutlineIcon color="success" />
@@ -320,10 +312,10 @@ export default function EnhancedTable() {
                           </TableCell>
                           <TableCell align="right">
                             <Button
-                              onClick={() => HandleBlocks(row.user)}
+                              onClick={() => HandleBlocks(row._id)}
                               variant="contained"
                             >
-                              {row.blocked ? "UnBlock" : "Block"}
+                              {row.propStatus ? "UnBlock" : "Block"}
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -344,7 +336,7 @@ export default function EnhancedTable() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={hostInfo.length}
+              count={propertyInfo.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -356,3 +348,5 @@ export default function EnhancedTable() {
     </>
   );
 }
+
+export default AdminPropertyManagement;

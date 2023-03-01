@@ -23,7 +23,7 @@ function HotelPage() {
   }, []);
 
   const handleClick = (id) => {
-    navigate(`/hotel-info/:${id}` );
+    navigate(`/hotel-info/${id}` );
   };
 
   return (

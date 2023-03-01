@@ -140,6 +140,7 @@ module.exports = {
         propStreet,
         propCity,
         propPin,
+        propRate,
         propImages,
       } = req.body;
       const hostExists = await User.findOne({ _id: hostId });
@@ -157,6 +158,7 @@ module.exports = {
           phone: propPhone,
           propDescription,
           address,
+          propRate,
           propImages,
         });
 

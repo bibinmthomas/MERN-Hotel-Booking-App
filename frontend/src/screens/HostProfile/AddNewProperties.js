@@ -54,6 +54,7 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
   const [propStreet, setPropStreet] = useState("");
   const [propCity, setPropCity] = useState("");
   const [propPin, setPropPin] = useState(0);
+  const [propRate, setPropRate] = useState(0);
   const [imageFiles, setImageFiles] = useState([]);
 
   useEffect(() => {
@@ -101,7 +102,8 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
         propDescription &&
         propStreet &&
         propCity &&
-        propPin) !== ""
+        propPin &&
+        (propRate > 3000 )) !== ""
     ) {
       console.log("propName:", propName);
       console.log("propType:", propType);
@@ -110,6 +112,7 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
       console.log("propStreet:", propStreet);
       console.log("propCity:", propCity);
       console.log("propPin:", propPin);
+      console.log("propImages:", propRate);
       console.log("propImages:", propImages);
     } else {
       console.log("somethings missing...");
@@ -125,6 +128,7 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
         propStreet,
         propCity,
         propPin,
+        propRate,
         propImages
       )
     );
@@ -268,7 +272,17 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
 
                   <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
                     <form action="" class="space-y-4">
-                      <div></div>
+                      <div>
+                      <input
+                      onChange={(e) => {
+                        setPropRate(e.target.value);
+                      }}
+                      class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                      placeholder="Price Rate"
+                      type="number"
+                      id="name"
+                    />
+                      </div>
                       <div>
                         <label class="sr-only" for="message">
                           Content

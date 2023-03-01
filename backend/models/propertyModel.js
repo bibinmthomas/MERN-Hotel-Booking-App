@@ -20,6 +20,10 @@ const propertySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    propRate:{
+      type:Number,
+      min:3000
+    },
     villaDetails: {},
     apartmentDetails: {},
     sharedDetails: {},
