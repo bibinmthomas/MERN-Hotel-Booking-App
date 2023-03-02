@@ -5,7 +5,8 @@ const {
   newHost,
   getUserById,
   updateUserProfile,
-  likeFunction
+  likeFunction,
+  addReservation
 } = require("../controllers/userControllers");
 const {
   postBlog,
@@ -39,6 +40,7 @@ router.route("/likeBlog").post(likeFunction);
 router.route("/postProperty").post(postProperty);
 router.route("/editProperty").post();
 router.route("/deleteProperty").post();
+router.route("/postReservation").post(addReservation);
 
 
 

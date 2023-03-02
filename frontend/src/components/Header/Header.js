@@ -53,8 +53,8 @@ function stringAvatar(name) {
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [scrollOffset,setScrollOffset] = useState(0)
-  
+
+  // const [scrollOffset,setScrollOffset] = useState(0)
   // const [render, setRender]=useState()
 
   // useEffect(() => {

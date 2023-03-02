@@ -38,4 +38,3 @@ export const newBlog = (host, title, content, URL) => async (dispatch) => {
     dispatch(blogCreateFail(errorIs));
   }
 };
-

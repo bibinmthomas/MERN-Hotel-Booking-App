@@ -15,7 +15,7 @@ function BlogPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const blogData = useSelector((state) => state.blogCreate);
-  const { loading, error, blogInfo } = blogData;
+  const { blogInfo } = blogData;
 
   useEffect(() => {
     dispatch(getBlogData());

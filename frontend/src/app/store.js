@@ -8,6 +8,7 @@ import blogCreateReducer from "../features/blogs/blogCreateSlice";
 import blogWorkingReducer from "../features/blogs/blogWorkingSlice";
 import propertyCreateReducer from "../features/property/propertyCreateSlice";
 import propertyWorkingReducer from "../features/property/propertyWorkingSlice";
+import reservationCreateReducer from "../features/reservation/reservationCreateSlice";
 // import thunk from "redux-thunk";
 
 const store = configureStore({
@@ -15,13 +16,13 @@ const store = configureStore({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userWorking: userWorkingReducer,
-    hotelCreate:hotelCreateReducer,
-    hotelWorking:hotelWorkingReducer,
-    blogCreate:blogCreateReducer,
-    blogWorking:blogWorkingReducer,
-    propertyCreate:propertyCreateReducer,
-    propertyWorking:propertyWorkingReducer,
-
+    hotelCreate: hotelCreateReducer,
+    hotelWorking: hotelWorkingReducer,
+    blogCreate: blogCreateReducer,
+    blogWorking: blogWorkingReducer,
+    propertyCreate: propertyCreateReducer,
+    propertyWorking: propertyWorkingReducer,
+    reservationCreate: reservationCreateReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

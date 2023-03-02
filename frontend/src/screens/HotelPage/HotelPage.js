@@ -20,7 +20,7 @@ function HotelPage() {
   useEffect(() => {
     dispatch(getPropertyData());
     console.log("In HotelPage : ",propertyInfo);
-  }, []);
+  }, [propertyInfo]);
 
   const handleClick = (id) => {
     navigate(`/hotel-info/${id}` );
@@ -55,7 +55,7 @@ function HotelPage() {
         }}
       >
         <Grid container spacing={1}>
-          {propertyInfo.map((item, index) => {
+          {propertyInfo?.map((item, index) => {
             return (
               <Grid key={index} item xs>              
                 <Card sx={{ minHeight: "350px", width: 350 }}>

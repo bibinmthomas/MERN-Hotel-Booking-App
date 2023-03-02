@@ -3,7 +3,8 @@ const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateTokens");
 const User = require("../models/userModel");
 const Hotel = require("../models/hotelModel");
-const Blog = require("../models/blogModel")
+const Blog = require("../models/blogModel");
+const Reservation = require("../models/reservationModel");
 module.exports = {
   registerUser: asyncHandler(async (req, res) => {
     try {
@@ -154,12 +155,51 @@ module.exports = {
   likeFunction: asyncHandler(async (req, res) => {
     const { blogId, likeData } = req.body;
     // console.log("BlogID & likeData:",blogId, likeData);
-    const blogExists = await Blog.findOne({_id:blogId})
-    if(blogExists){
+    const blogExists = await Blog.findOne({ _id: blogId });
+    if (blogExists) {
       console.log(blogExists);
-      blogExists.likes.id = likeData
-      await blogExists.save()
-      res.json({message:"LIKES SAVED!!!"})
+      blogExists.likes.id = likeData;
+      await blogExists.save();
+      res.json({ message: "LIKES SAVED!!!" });
+    }
+  }),
+  addReservation: asyncHandler(async (req, res) => {
+    const {
+      userId,
+      propId,
+      hostId,
+      propRate,
+      totalPrice,
+      checkin,
+      checkout,
+      guest,
+    } = req.body;
+    console.log(
+      "backend:",
+      userId,
+      propId,
+      hostId,
+      propRate,
+      totalPrice,
+      checkin,
+      checkout,
+      guest
+    );
+    const reservationData = await Reservation.create({
+      userId,
+      propId,
+      hostId,
+      propRate,
+      totalPrice,
+      checkin,
+      checkout,
+      guest,
+    });
+    if (reservationData) {
+      res.status(201).json(reservationData);
+    } else {
+      res.status(400);
+      throw new Error("Error Occured!");
     }
   }),
 };
