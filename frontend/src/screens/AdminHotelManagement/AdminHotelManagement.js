@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import DangerousIcon from "@mui/icons-material/Dangerous";
-import { hostBlock } from "../../actions/adminAction";
+import { getHostDetails, hostBlock } from "../../actions/adminAction";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -49,15 +49,15 @@ function getComparator(order, orderBy) {
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
       return order;
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
 const headCells = [
@@ -94,14 +94,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -110,17 +103,8 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          {/* <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          /> */}
         </TableCell>
-        {headCells.map((headCell) => (
+        {headCells?.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -227,9 +211,10 @@ export default function EnhancedTable() {
   const adminInfo = useSelector((state) => state.hotelWorking);
   const { loading, hostInfo, error } = adminInfo;
 
-  // React.useEffect(()=>{
-  //   console.log(hostInfo);
-  // })
+  React.useEffect(()=>{
+    dispatch(getHostDetails())
+    console.log(hostInfo);
+  },[])
   const HandleBlocks = (userId) => {
     dispatch(hostBlock(userId));
   };
@@ -241,7 +226,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = hostInfo.map((n) => n.hotelName);
+      const newSelected = hostInfo?.map((n) => n.hotelName);
       setSelected(newSelected);
       return;
     }
@@ -260,7 +245,7 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - hostInfo.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - hostInfo?.length) : 0;
 
   return (
     <>
@@ -282,12 +267,12 @@ export default function EnhancedTable() {
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={hostInfo.length}
+                  rowCount={hostInfo?.length}
                 />
                 <TableBody>
                   {stableSort(hostInfo, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
+                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.map((row, index) => {
                       const isItemSelected = isSelected(row.hotelName);
                       const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -344,7 +329,7 @@ export default function EnhancedTable() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={hostInfo.length}
+              count={hostInfo?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

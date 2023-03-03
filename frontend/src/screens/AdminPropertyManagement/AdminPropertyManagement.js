@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import DangerousIcon from "@mui/icons-material/Dangerous";
-import { propBlock } from "../../actions/adminAction";
+import { getPropDetails, propBlock } from "../../actions/adminAction";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -49,15 +49,15 @@ function getComparator(order, orderBy) {
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
       return order;
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
 const headCells = [
@@ -94,14 +94,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -109,9 +102,8 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
-        {headCells.map((headCell) => (
+        <TableCell padding="checkbox"></TableCell>
+        {headCells?.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -213,14 +205,13 @@ function AdminPropertyManagement() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const dispatch = useDispatch();
-  const adminInfo = useSelector((state) => state.hotelWorking);
-  const {  hostInfo } = adminInfo;
   const propertyData = useSelector((state) => state.propertyWorking);
   const { loading, propertyInfo } = propertyData;
 
-  // React.useEffect(()=>{
-  //   console.log(propertyInfo);
-  // })
+  React.useEffect(()=>{
+    dispatch(getPropDetails())
+    console.log(propertyInfo);
+  },[])
 
   const HandleBlocks = (_id) => {
     dispatch(propBlock(_id));
@@ -233,7 +224,7 @@ function AdminPropertyManagement() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = propertyInfo.map((n) => n.hostName);
+      const newSelected = propertyInfo?.map((n) => n.hostName);
       setSelected(newSelected);
       return;
     }
@@ -252,7 +243,7 @@ function AdminPropertyManagement() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - propertyInfo.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - propertyInfo?.length) : 0;
 
   return (
     <>
@@ -274,12 +265,12 @@ function AdminPropertyManagement() {
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={propertyInfo.length}
+                  rowCount={propertyInfo?.length}
                 />
                 <TableBody>
                   {stableSort(propertyInfo, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
+                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.map((row, index) => {
                       const isItemSelected = isSelected(row.hostName);
                       const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -336,7 +327,7 @@ function AdminPropertyManagement() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={propertyInfo.length}
+              count={propertyInfo?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -28,8 +28,8 @@ export const getUserDetails = () => async (dispatch) => {
     };
     dispatch(userWorkingReq());
     const { data } = await axiosConfig.get("/admin/user-management", config);
-    // console.log("User Data :", data);
-    dispatch(userWorkingSuccess(data));
+    console.log("User Data :", data);
+    await dispatch(userWorkingSuccess(data));
     localStorage.setItem("usersInfo", JSON.stringify(data));
   } catch (error) {
     const errorIs =
@@ -49,7 +49,7 @@ export const getHostDetails = () => async (dispatch) => {
     dispatch(hotelWorkingReq());
     const { data } = await axiosConfig.get("/admin/hotel-management", config);
     console.log("Host Data :", data);
-    dispatch(hotelWorkingSuccess(data));
+    await dispatch(hotelWorkingSuccess(data));
     localStorage.setItem("hostInfo", JSON.stringify(data));
   } catch (error) {
     const errorIs =
@@ -72,7 +72,7 @@ export const getPropDetails = () => async (dispatch) => {
       config
     );
     console.log("Property Data :", data);
-    dispatch(propertyWorkingSuccess(data));
+    await dispatch(propertyWorkingSuccess(data));
     localStorage.setItem("propertyInfo", JSON.stringify(data));
   } catch (error) {
     const errorIs =

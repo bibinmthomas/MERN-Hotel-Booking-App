@@ -49,15 +49,15 @@ function getComparator(order, orderBy) {
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
       return order;
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
 const headCells = [
@@ -95,11 +95,8 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -231,7 +228,7 @@ export default function EnhancedTable() {
 
   React.useEffect(() => {
     dispatch(getUserDetails());
-    // console.log("UserInfo:", userInfo);
+    console.log("UserInfo:", userInfo);
   }, []);
   const HandleBlocks = (_id) => {
     dispatch(userBlock(_id));
@@ -244,7 +241,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = userInfo.map((n) => n.name);
+      const newSelected = userInfo?.map((n) => n.name);
       setSelected(newSelected);
       return;
     }
@@ -263,7 +260,7 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userInfo.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userInfo?.length) : 0;
 
   return (
     <>
@@ -285,12 +282,12 @@ export default function EnhancedTable() {
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={userInfo.length}
+                  rowCount={userInfo?.length}
                 />
                 <TableBody>
                   {stableSort(userInfo, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
+                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.map((row, index) => {
                       const isItemSelected = isSelected(row.name);
                       const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -347,7 +344,7 @@ export default function EnhancedTable() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={userInfo.length}
+              count={userInfo?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

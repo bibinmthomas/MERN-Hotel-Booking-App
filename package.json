@@ -25,6 +25,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
-    "mui-datatables": "^4.3.0"
+    "mui-datatables": "^4.3.0",
+    "stripe": "^11.12.0"
   }
 }
