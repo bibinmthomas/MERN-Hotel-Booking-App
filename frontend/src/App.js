@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import LoginScreen from "./screens/LoginScreen/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen/RegisterScreen";
+import LoginScreen from "./screens/General/LoginScreen/LoginScreen";
+import RegisterScreen from "./screens/General/RegisterScreen/RegisterScreen";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import HomePage from "./screens/HomePage/HomePage";
-import AdminHomePage from "./screens/AdminHomePage/AdminHomePage";
+import HomePage from "./screens/General/HomePage/HomePage";
+import AdminHomePage from "./screens/Admin/AdminHomePage/AdminHomePage";
 import Header from "./components/Header/Header";
-import UserProfile from "./screens/UserProfile/UserProfile";
-import HotelProfile from "./screens/HostProfile/HotelProfile";
-import NewHost from "./screens/NewHost/NewHost";
-import AdminHotelManagement from "./screens/AdminHotelManagement/AdminHotelManagement"
+import UserProfile from "./screens/User/UserProfile/UserProfile";
+import HotelProfile from "./screens/Host/HostProfile/HotelProfile";
+import NewHost from "./screens/User/NewHost/NewHost";
+import AdminHotelManagement from "./screens/Admin/AdminHotelManagement/AdminHotelManagement"
 import { useSelector } from "react-redux";
 import Footer from "./components/Footer/Footer";
-import BlogPage from "./screens/BlogPage/BlogPage";
-import BlogInfo from "./screens/BlogInfo/BlogInfo";
-import HotelPage from "./screens/HotelPage/HotelPage";
-import HotelInfo from "./screens/HotelInfo/HotelInfo"
-import ReservationPayment from "./screens/ReservationPayment/ReservationPayment";
+import BlogPage from "./screens/General/BlogPage/BlogPage";
+import BlogInfo from "./screens/General/BlogInfo/BlogInfo";
+import HotelPage from "./screens/General/HotelPage/HotelPage";
+import HotelInfo from "./screens/General/HotelInfo/HotelInfo"
+import ReservationPayment from "./screens/User/ReservationPayment/ReservationPayment";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -37,6 +37,7 @@ function App() {
           <Route path="/hotels" element={<HotelPage />} />
           <Route path="/hotel-info/:id" element={<HotelInfo/>} />
           <Route path="/payments" element={<ReservationPayment/>} />
+          <Route path="/paymentSuccess/:id" element={<HotelPage/>} />
           <Route path="login" element={userInfo ? <HomePage /> : <LoginScreen setAdmin={setAdmin} />} />
           <Route path="register" element={userInfo ? <HomePage /> :<RegisterScreen />} />
           <Route path="user-profile" element={userInfo?.role === "User" ? <UserProfile />:<Navigate to="/" />} />
