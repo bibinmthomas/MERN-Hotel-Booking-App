@@ -202,4 +202,19 @@ module.exports = {
       throw new Error("Error Occured!");
     }
   }),
+  confirmPayment: asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    console.log("id", id);
+    const reservationData = await Reservation.findOne({ _id: id });
+    if (reservationData) {
+      console.log(reservationData);
+      if (reservationData.paymentStatus === false) {
+        reservationData.paymentStatus = true;
+        await reservationData.save();
+        res.json({ message: "Payment Confirmed" });
+      } else {
+        res.json({ message: "Payment Already Confirmed" });
+      }
+    }
+  }),
 };

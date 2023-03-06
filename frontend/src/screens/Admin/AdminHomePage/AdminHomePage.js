@@ -38,6 +38,7 @@ function AdminHomePage(props) {
     "User Management",
     "Property Management",
     "Blog Management",
+    "Reservation Management"
   ];
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -181,6 +182,7 @@ function AdminHomePage(props) {
           {option === "User Management" && "2"}
           {option === "Property Management" && "3"}
           {option === "Blog Management" && "4"}
+          {option === "Reservation Management" && "5"}
         </Box>
       </>
     </Box>

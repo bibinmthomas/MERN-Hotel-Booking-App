@@ -38,3 +38,23 @@ export const newReservation =
       console.log(error.message);
     }
   };
+export const confirmPayment = (id) => async (dispatch) => {
+  try {
+    console.log("in dispatch:", id);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    const { data } = await axiosConfig.post(
+      `/confirmPayment`,
+      {
+        id,
+      },
+      config
+    );
+    console.log(data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};

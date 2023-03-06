@@ -17,6 +17,7 @@ import BlogInfo from "./screens/General/BlogInfo/BlogInfo";
 import HotelPage from "./screens/General/HotelPage/HotelPage";
 import HotelInfo from "./screens/General/HotelInfo/HotelInfo"
 import ReservationPayment from "./screens/User/ReservationPayment/ReservationPayment";
+import ReservationSuccess from "./screens/User/ReservationSuccess/ReservationSuccess";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -37,7 +38,7 @@ function App() {
           <Route path="/hotels" element={<HotelPage />} />
           <Route path="/hotel-info/:id" element={<HotelInfo/>} />
           <Route path="/payments" element={<ReservationPayment/>} />
-          <Route path="/paymentSuccess/:id" element={<HotelPage/>} />
+          <Route path="/paymentSuccess/:id" element={<ReservationSuccess/>} />
           <Route path="login" element={userInfo ? <HomePage /> : <LoginScreen setAdmin={setAdmin} />} />
           <Route path="register" element={userInfo ? <HomePage /> :<RegisterScreen />} />
           <Route path="user-profile" element={userInfo?.role === "User" ? <UserProfile />:<Navigate to="/" />} />
@@ -50,7 +51,6 @@ function App() {
               admin ? <AdminHomePage setAdmin={setAdmin}/> : <LoginScreen setAdmin={setAdmin} />
             }
           />
-          <Route path="admin/hotel-management" element={ admin ? <AdminHotelManagement/> : <LoginScreen setAdmin={setAdmin}/> }/>
         </Routes>
       </main>
       {admin ? null :<Footer />}

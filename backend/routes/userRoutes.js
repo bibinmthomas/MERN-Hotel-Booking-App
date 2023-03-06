@@ -8,6 +8,7 @@ const {
   updateUserProfile,
   likeFunction,
   addReservation,
+  confirmPayment,
 } = require("../controllers/userControllers");
 const {
   postBlog,
@@ -70,5 +71,6 @@ router.route("/create-payment-intent").post(async (req, res) => {
     clientSecret: paymentIntent.client_secret,
   });
 });
+router.route("/confirmPayment").post(confirmPayment);
 
 module.exports = router;

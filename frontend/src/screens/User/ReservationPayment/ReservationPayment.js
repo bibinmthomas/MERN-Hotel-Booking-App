@@ -7,7 +7,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import App from "./App"
+import App from "./App";
 
 function ReservationPayment() {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ function ReservationPayment() {
   const { loading, propertyCurrent } = propertyData;
   const [paymentOption, setPaymentOption] = useState("PayTm");
   useEffect(() => {
+    localStorage.setItem("reservationInfo", JSON.stringify(reservationInfo));
     console.log("propertyCurrent:", propertyCurrent);
     console.log("reservationInfo:", reservationInfo);
     console.log("paymentOption", paymentOption);
@@ -82,9 +83,15 @@ function ReservationPayment() {
                     </span>
                   </div>
                   <div className="grid col-span-2">
-                    <span class="text-xs text-gray-500 mt-2">Childrens:{reservationInfo?.guest?.children}</span>
-                    <span class="text-xs text-gray-500 mt-2">Adults:{reservationInfo?.guest?.adult}</span>
-                    <span class="text-xs text-gray-500 mt-2">Elders:{reservationInfo?.guest?.elder}</span>
+                    <span class="text-xs text-gray-500 mt-2">
+                      Childrens:{reservationInfo?.guest?.children}
+                    </span>
+                    <span class="text-xs text-gray-500 mt-2">
+                      Adults:{reservationInfo?.guest?.adult}
+                    </span>
+                    <span class="text-xs text-gray-500 mt-2">
+                      Elders:{reservationInfo?.guest?.elder}
+                    </span>
                   </div>
                   <span class="text-xs text-gray-500 mt-2">Dates:</span>
                 </div>
@@ -109,7 +116,9 @@ function ReservationPayment() {
                   </button>
                 </div>
               </div>
-            ) : <App/>}
+            ) : (
+              <App />
+            )}
             {/*  */}
           </div>
         </div>
