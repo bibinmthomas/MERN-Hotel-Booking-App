@@ -53,18 +53,22 @@ export const checkValidDates = (id, dateArray) => async (dispatch) => {
 
 export const newReservation =
   (userId, propId, hostId, propRate, totalPrice, checkin, checkout, guest) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
       dispatch(reservationCreateReq());
       const { data } = await axiosConfig.post(
         `/postReservation`,
         {
-          userId,
+          // userId,
           propId,
           hostId,
           propRate,

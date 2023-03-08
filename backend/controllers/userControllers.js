@@ -104,7 +104,7 @@ module.exports = {
       pinno,
     };
     const hotel = await Hotel.create({
-      user:req.user._id,
+      user: req.user._id,
       hotelName,
       adhaarno,
       address,
@@ -180,8 +180,9 @@ module.exports = {
     }
   }),
   addReservation: asyncHandler(async (req, res) => {
+    console.log("req.user", req.user._id);
     const {
-      userId,
+      // userId,
       propId,
       hostId,
       propRate,
@@ -192,7 +193,7 @@ module.exports = {
     } = req.body;
     console.log(
       "backend:",
-      userId,
+      // userId,
       propId,
       hostId,
       propRate,
@@ -202,7 +203,7 @@ module.exports = {
       guest
     );
     const reservationData = await Reservation.create({
-      userId,
+      userId: req.user._id,
       propId,
       hostId,
       propRate,

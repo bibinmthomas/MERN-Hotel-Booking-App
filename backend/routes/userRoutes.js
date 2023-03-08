@@ -55,7 +55,7 @@ router.route("/likeBlog").post(likeFunction);
 router.route("/postProperty").post(protect,postProperty);
 router.route("/editProperty").post();
 router.route("/deleteProperty").post();
-router.route("/postReservation").post(addReservation);
+router.route("/postReservation").post(protect,addReservation);
 router.route("/checkValidDates").post(checkValidDates);
 router.route("/create-payment-intent").post(async (req, res) => {
   console.log(req.body);
