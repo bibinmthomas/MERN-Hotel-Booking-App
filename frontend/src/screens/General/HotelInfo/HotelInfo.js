@@ -4,28 +4,62 @@ import {
   Typography,
   Backdrop,
   CircularProgress,
+  Dialog,
+  Slide,
+  DialogContent,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { propertyWorkingLoadingOff } from "../../../features/property/propertyWorkingSlice";
 import { getCurrentProp } from "../../../actions/propertyAction";
-import { newReservation } from "../../../actions/reservationAction";
+import {
+  newReservation,
+  checkValidDates,
+} from "../../../actions/reservationAction";
 import Loading from "../../../components/Loading";
+import DOMpurify from "dompurify"
+
+Date.prototype.addDays = function (days) {
+  var dat = new Date(this.valueOf());
+  dat.setDate(dat.getDate() + days);
+  return dat;
+};
+
+function getDates(startDate, stopDate) {
+  var dateArray = new Array();
+  var currentDate = startDate;
+  while (currentDate <= stopDate) {
+    dateArray.push(currentDate);
+    currentDate = currentDate.addDays(1);
+  }
+  return dateArray;
+}
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function HotelInfo() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const propertyData = useSelector((state) => state.propertyWorking);
   const { loading, propertyInfo, propertyCurrent } = propertyData;
   const userData = useSelector((state) => state.userLogin);
   const { userInfo } = userData;
-  const reservationData = useSelector((state) => state.reservationCreate);
-  const { reservationError, reservationInfo } =
-    reservationData;
+  // const reservationData = useSelector((state) => state.reservationCreate);
+  // const { reservationError, reservationInfo } = reservationData;
+  const reservationCheck = useSelector((state) => state.reservationCheck);
+  const {
+    reservationLoading,
+    reservationAvailable,
+    reservationCorrectionDates,
+    reservationError,
+  } = reservationCheck;
   const { id } = useParams();
   const [open, setOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(propertyCurrent?.propRate);
@@ -34,6 +68,8 @@ function HotelInfo() {
   const [childCount, setChildCount] = useState(0);
   const [adultCount, setAdultCount] = useState(1);
   const [elderCount, setElderCount] = useState(0);
+  const [openPopUp, setOpenPopUp] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -57,8 +93,37 @@ function HotelInfo() {
                 (propertyCurrent?.propRate / 2) * elderCount
             );
           }
-          console.log(totalPrice);
         }
+      }
+      console.log(
+        "status:",
+        reservationAvailable,
+        reservationCorrectionDates,
+        reservationError
+      );
+      if (reservationAvailable && checkin && checkout && toggle) {
+        const userId = userInfo._id;
+        const propId = propertyCurrent._id;
+        const hostId = propertyCurrent.hostId;
+        const propRate = propertyCurrent.propRate;
+        const guest = {
+          children: childCount,
+          adult: adultCount,
+          elder: elderCount,
+        };
+        saveReservation(
+          userId,
+          propId,
+          hostId,
+          propRate,
+          totalPrice,
+          checkin,
+          checkout,
+          guest
+        );
+        setToggle(false);
+      } else {
+        setOpenPopUp(true);
       }
     }
   }, [
@@ -69,6 +134,10 @@ function HotelInfo() {
     childCount,
     adultCount,
     elderCount,
+    reservationAvailable,
+    reservationCorrectionDates,
+    reservationError,
+    toggle,
   ]);
 
   const handleCheckinChange = (newValue) => {
@@ -125,6 +194,24 @@ function HotelInfo() {
       guest
     );
     setOpen(!open);
+    var dateArray = getDates(checkin, checkout);
+    var id = propertyCurrent._id;
+    console.log("Before......");
+    await dispatch(checkValidDates(id, dateArray));
+    handleClose();
+    setToggle(true);
+  };
+  const saveReservation = async (
+    userId,
+    propId,
+    hostId,
+    propRate,
+    totalPrice,
+    checkin,
+    checkout,
+    guest
+  ) => {
+    console.log("reservationAvailable:", reservationAvailable);
     await dispatch(
       newReservation(
         userId,
@@ -137,11 +224,14 @@ function HotelInfo() {
         guest
       )
     );
-    handleClose();
-    navigate('/payments')
+    navigate("/payments");
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handlePopUp = () => {
+    setOpenPopUp(false);
+    setToggle(false);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -149,6 +239,56 @@ function HotelInfo() {
         <Backdrop open={open}>
           <CircularProgress color="inherit" />
         </Backdrop>
+        {reservationAvailable === false &&
+          reservationCorrectionDates.length !== 0 &&
+          toggle && (
+            <Dialog
+              className="flex justify-center items-center"
+              open={openPopUp}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handlePopUp}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogContent class="flex justify-center items-center m-1 font-medium py-1 px-2 rounded-md text-yellow-700 bg-yellow-100 border border-yellow-300 ">
+                <div>
+                  <div slot="avatar">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="100%"
+                      height="100%"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-info w-5 h-5 mx-2"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div class="text-xl font-normal  max-w-full flex-initial">
+                    <div class="py-2">
+                      Choose Dates other than:
+                      {reservationCorrectionDates.map((date, index) => {
+                        return <div class="text-sm font-base">{date}</div>;
+                      })}
+                    </div>
+                  </div>
+                  <div class="flex flex-auto flex-row-reverse">
+                    <div>
+                      <IconButton onClick={handlePopUp} aria-label="delete">
+                        <CloseIcon />
+                      </IconButton>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
 
         <div style={{ height: "5rem" }}></div>
         {loading ? (
@@ -221,7 +361,7 @@ function HotelInfo() {
                     <div
                       className="w-5/6 my-5"
                       dangerouslySetInnerHTML={{
-                        __html: propertyCurrent?.propDescription,
+                        __html: DOMpurify.sanitize(propertyCurrent?.propDescription),
                       }}
                     />
                     <div>Type:{propertyCurrent?.propType}</div>

@@ -5,6 +5,23 @@ const User = require("../models/userModel");
 const Hotel = require("../models/hotelModel");
 const Blog = require("../models/blogModel");
 const Reservation = require("../models/reservationModel");
+
+Date.prototype.addDays = function (days) {
+  var dat = new Date(this.valueOf());
+  dat.setDate(dat.getDate() + days);
+  return dat;
+};
+
+function getDates(startDate, stopDate) {
+  var dateArray = new Array();
+  var currentDate = startDate;
+  while (currentDate <= stopDate) {
+    dateArray.push(currentDate);
+    currentDate = currentDate.addDays(1);
+  }
+  return dateArray;
+}
+
 module.exports = {
   registerUser: asyncHandler(async (req, res) => {
     try {
@@ -70,9 +87,9 @@ module.exports = {
     }
   }),
   newHost: asyncHandler(async (req, res) => {
-    const { user, hotelName, adhaarno, city, street, pinno } = req.body;
-
-    const findUser = await User.findOne({ _id: user });
+    const { hotelName, adhaarno, city, street, pinno } = req.body;
+    console.log("req.user:", req.user);
+    const findUser = await User.findOne({ _id: req.user._id });
 
     if (!findUser) {
       res.status(400);
@@ -87,7 +104,7 @@ module.exports = {
       pinno,
     };
     const hotel = await Hotel.create({
-      user,
+      user:req.user._id,
       hotelName,
       adhaarno,
       address,
@@ -127,9 +144,9 @@ module.exports = {
     }
   }),
   updateUserProfile: asyncHandler(async (req, res) => {
-    console.log(req.body);
-    const user = await User.findById(req.body.userId);
-    console.log(user);
+    console.log("req.body:", req.body);
+    const user = await User.findById(req.user._id);
+    console.log("user:", user);
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
@@ -137,7 +154,6 @@ module.exports = {
       const updatedUser = await user.save();
 
       res.json({
-        token: generateToken(user._id),
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
@@ -215,6 +231,41 @@ module.exports = {
       } else {
         res.json({ message: "Payment Already Confirmed" });
       }
+    }
+  }),
+  checkValidDates: asyncHandler(async (req, res) => {
+    const { id, currentDateArray } = req.body;
+    var allDates = [];
+    console.log("id & dates", id, currentDateArray);
+    const reservationData = await Reservation.find({
+      propId: id,
+    });
+    if (reservationData) {
+      reservationData.map((obj) => {
+        let temp = getDates(obj.checkin, obj.checkout);
+        temp.map((item) => {
+          const day = item.getDate().toString().padStart(2, "0");
+          const month = (item.getMonth() + 1).toString().padStart(2, "0");
+          const year = item.getFullYear();
+          const formattedDate = `${day}-${month}-${year}`;
+          allDates.push(formattedDate);
+        });
+      });
+      // console.log("allDates:", allDates);
+      const check = currentDateArray.some((value) => allDates.includes(value));
+      if (check) {
+        const commonValues = currentDateArray.filter((value) =>
+          allDates.includes(value)
+        );
+        console.log("common days:", commonValues);
+        console.log("check:", check);
+        res.json({ message: "Invalid", commonValues });
+      } else {
+        console.log("check:", check);
+        res.json({ message: "Valid" });
+      }
+    } else {
+      res.json({ message: "No priors" });
     }
   }),
 };

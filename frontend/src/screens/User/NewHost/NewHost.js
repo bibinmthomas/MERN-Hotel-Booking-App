@@ -37,6 +37,7 @@ function NewHost() {
       return;
     } else {
       setMessage(null);
+      // if (dispatch(newHost(user, hotelName, adhaarno, city, street, pinno))) {
       if (dispatch(newHost(user, hotelName, adhaarno, city, street, pinno))) {
         setTimeout(() => {
           dispatch(getNewHostData(userInfo._id));

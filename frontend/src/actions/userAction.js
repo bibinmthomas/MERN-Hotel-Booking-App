@@ -96,9 +96,14 @@ export const updateProfile = (user) => async (dispatch, getState) => {
   try {
     dispatch(userLoginReq());
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -117,11 +122,15 @@ export const updateProfile = (user) => async (dispatch, getState) => {
 };
 
 export const newHost =
-  (user, hotelName, adhaarno, city, street, pinno) => async (dispatch) => {
+  (user, hotelName, adhaarno, city, street, pinno) => async (dispatch,getState) => {
     try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
       dispatch(hotelCreateReq());
@@ -130,7 +139,6 @@ export const newHost =
       const { data } = await axiosConfig.post(
         `/NewHost`,
         {
-          user,
           hotelName,
           adhaarno,
           city,

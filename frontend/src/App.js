@@ -42,7 +42,7 @@ function App() {
           <Route path="login" element={userInfo ? <HomePage /> : <LoginScreen setAdmin={setAdmin} />} />
           <Route path="register" element={userInfo ? <HomePage /> :<RegisterScreen />} />
           <Route path="user-profile" element={userInfo?.role === "User" ? <UserProfile />:<Navigate to="/" />} />
-          <Route path="hotel-profile" element={userInfo?.role === "Hotel" ?<HotelProfile />:<Navigate to="/" />} />
+          <Route path="hotel-profile" element={userInfo?.role === "Hotel" ? <HotelProfile />:<Navigate to="/" />} />
 
           <Route path="Newhost" element={userInfo ? <NewHost/> : <Navigate to="/" /> } />
           <Route

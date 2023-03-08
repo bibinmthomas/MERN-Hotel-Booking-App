@@ -32,7 +32,7 @@ function ReservationPayment() {
 
   return (
     <>
-      <body class="flex items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-8">
+      <body class="flex items-center justify-center w-full min-h-screen bg-gray-100 text-gray-800 p-8">
         {/* <!-- Component Start --> */}
         <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8 w-full max-w-screen-lg">
           <div class="lg:col-span-2">

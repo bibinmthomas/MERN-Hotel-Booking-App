@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addComment, deleteCommentAction, likeBlogAction } from "../../../actions/blogAction";
 import Loading from "../../../components/Loading";
+import DOMPurify from "dompurify";
 
 function BlogInfo() {
   const dispatch = useDispatch();
@@ -124,7 +125,7 @@ function BlogInfo() {
 
         <div
           className="w-5/6"
-          dangerouslySetInnerHTML={{ __html: state.blogData.blogContent }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(state.blogData.blogContent) }}
         />
       </div>
 

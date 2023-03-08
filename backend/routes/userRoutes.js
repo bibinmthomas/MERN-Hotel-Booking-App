@@ -9,6 +9,7 @@ const {
   likeFunction,
   addReservation,
   confirmPayment,
+  checkValidDates,
 } = require("../controllers/userControllers");
 const {
   postBlog,
@@ -21,7 +22,8 @@ const {
   getProperty,
 } = require("../controllers/hostControllers");
 const { getUsers } = require("../controllers/adminControllers");
-// const protect = require("../middlewares/authMiddleware");
+const protect = require("../middlewares/authMiddleware");
+//stripe implementation...
 const stripe = require("stripe")(
   "sk_test_51Mh9aoSDG98Dc7SRtK3axJd6Apa3JOMhKt0gzJ4AzHuLANTkPIObic1JhuOjsXgLV9HNPTRcgt6j8dJGNbS3720C00rUdXcSrt"
 );
@@ -41,8 +43,8 @@ router.route("/propertyFetch").get(getProperty);
 router.route("/:id").get(getUserById);
 router.route("/register").post(registerUser);
 router.route("/login").post(authUser);
-router.route("/Newhost").post(newHost);
-router.route("/updateProfile").post(updateUserProfile);
+router.route("/Newhost").post(protect,newHost);
+router.route("/updateProfile").post(protect,updateUserProfile);
 
 router.route("/postBlog").post(postBlog);
 router.route("/profileUpdate").post(updateUserProfile);
@@ -54,6 +56,7 @@ router.route("/postProperty").post(postProperty);
 router.route("/editProperty").post();
 router.route("/deleteProperty").post();
 router.route("/postReservation").post(addReservation);
+router.route("/checkValidDates").post(checkValidDates);
 router.route("/create-payment-intent").post(async (req, res) => {
   console.log(req.body);
   const { totalPrice } = req.body;
