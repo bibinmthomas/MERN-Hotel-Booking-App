@@ -22,7 +22,7 @@ const {
   getProperty,
 } = require("../controllers/hostControllers");
 const { getUsers } = require("../controllers/adminControllers");
-const protect = require("../middlewares/authMiddleware");
+const protect = require("../middlewares/authUserMiddleware");
 //stripe implementation...
 const stripe = require("stripe")(
   "sk_test_51Mh9aoSDG98Dc7SRtK3axJd6Apa3JOMhKt0gzJ4AzHuLANTkPIObic1JhuOjsXgLV9HNPTRcgt6j8dJGNbS3720C00rUdXcSrt"
@@ -46,13 +46,13 @@ router.route("/login").post(authUser);
 router.route("/Newhost").post(protect,newHost);
 router.route("/updateProfile").post(protect,updateUserProfile);
 
-router.route("/postBlog").post(postBlog);
+router.route("/postBlog").post(protect,postBlog);
 router.route("/profileUpdate").post(updateUserProfile);
 router.route("/deleteBlog/:id").delete(deleteBlog);
 router.route("/editBlog").post(updateBlog);
 router.route("/addComment").post(addComment);
 router.route("/likeBlog").post(likeFunction);
-router.route("/postProperty").post(postProperty);
+router.route("/postProperty").post(protect,postProperty);
 router.route("/editProperty").post();
 router.route("/deleteProperty").post();
 router.route("/postReservation").post(addReservation);

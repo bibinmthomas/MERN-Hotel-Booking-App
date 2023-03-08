@@ -148,7 +148,7 @@ export const newHost =
         config
       );
       console.log("Recieved from backend:", data);
-      dispatch(hotelCreateSuccess(data));
+      // dispatch(hotelCreateSuccess(data));
     } catch (error) {
       const errorIs =
         error.response && error.response.data.message

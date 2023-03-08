@@ -9,13 +9,13 @@ const Property = require("../models/propertyModel");
 module.exports = {
   postBlog: asyncHandler(async (req, res) => {
     try {
-      // console.log(req.body);
-      const { host, title, content, URL } = req.body;
-      // console.log(host, title, content, URL);
-      const hostExists = await User.findOne({ _id: host });
+      console.log("req.user", req.user._id);
+      // const { host, title, content, URL } = req.body;
+      const { title, content, URL } = req.body;
+      const hostExists = await User.findOne({ _id: req.user._id });
       if (hostExists) {
         const blog = await Blog.create({
-          user: host,
+          user: req.user._id,
           blogTitle: title,
           blogContent: content,
           blogPic: URL,
@@ -131,7 +131,6 @@ module.exports = {
   postProperty: asyncHandler(async (req, res) => {
     try {
       const {
-        hostId,
         hostName,
         propName,
         propType,
@@ -143,7 +142,7 @@ module.exports = {
         propRate,
         propImages,
       } = req.body;
-      const hostExists = await User.findOne({ _id: hostId });
+      const hostExists = await User.findOne({ _id: req.user._id });
       if (hostExists) {
         const address = {
           city: propCity,
@@ -151,7 +150,7 @@ module.exports = {
           pinno: propPin,
         };
         const property = await Property.create({
-          hostId,
+          hostId: req.user._id,
           hostName,
           propName,
           propType,
@@ -176,7 +175,7 @@ module.exports = {
       console.log(error.message);
     }
   }),
-  getProperty:asyncHandler(async (req, res) => {
+  getProperty: asyncHandler(async (req, res) => {
     try {
       const propertyData = await Property.find({});
       if (propertyData) {

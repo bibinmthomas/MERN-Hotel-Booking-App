@@ -119,7 +119,7 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
     }
     await dispatch(
       newProperty(
-        hostId,
+        // hostId,
         hostName,
         propName,
         propType,

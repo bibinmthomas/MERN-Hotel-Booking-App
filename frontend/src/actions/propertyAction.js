@@ -16,7 +16,7 @@ import axiosConfig from "../axiosConfig";
 
 export const newProperty =
   (
-    hostId,
+    // hostId,
     hostName,
     propName,
     propType,
@@ -28,11 +28,15 @@ export const newProperty =
     propRate,
     propImages
   ) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
@@ -40,7 +44,6 @@ export const newProperty =
       const { data } = await axiosConfig.post(
         `/postProperty`,
         {
-          hostId,
           hostName,
           propName,
           propType,
