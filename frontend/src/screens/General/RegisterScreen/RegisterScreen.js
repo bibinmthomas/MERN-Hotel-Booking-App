@@ -86,149 +86,349 @@ const RegisterScreen = () => {
     } else if (name.length < 8) {
       setMessage("Name must be atleast 8 characters");
       return;
-    }else if(OTP.length !== 6){
-      setMessage("Invalid OTP")
-      return
+    } else if (OTP.length !== 6) {
+      setMessage("Invalid OTP");
+      return;
     } else {
       setMessage(null);
-      let confirmationResult = window.confirmationResult
-      confirmationResult.confirm(OTP).then((result) => {
+      let confirmationResult = window.confirmationResult;
+      confirmationResult
+        .confirm(OTP)
+        .then((result) => {
+          // User signed in successfully.
+          const user = result.user;
 
-        // User signed in successfully.
-        const user = result.user;
-
-        //finally registering
-      dispatch(register(name, email, phone, password));
-      }).catch((error) => {
-
-        // User couldn't sign in (bad verification code?)
-        setMessage("Unable to confirm OTP")
-      });
-
+          //finally registering
+          dispatch(register(name, email, phone, password));
+        })
+        .catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          setMessage("Unable to confirm OTP");
+        });
     }
   };
 
   return (
-    <Box
-      sx={{
-        marginTop: "6rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-      {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
-      {loading && <Loading />}
-      <form sx={{ mt: 1, display: "flex" }} onSubmit={submitHandler}>
-        <span className="text-primary">Username</span>
-        <TextField
-          sx={{ mt: 1, display: "flex" }}
-          label="Username"
-          variant="outlined"
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <span className="text-primary">Email</span>
-        <TextField
-          sx={{ mt: 1, display: "flex" }}
-          label="Email"
-          variant="outlined"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <span className="text-primary">Phone No.</span>
-        <TextField
-          sx={{ mt: 1, display: "flex" }}
-          label="Phone"
-          variant="outlined"
-          type="tel"
-          required
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        {expendForm === true ? (
-          <>
-            <span className="text-primary">Enter OTP:</span>
-            <TextField
-              sx={{ mt: 1, display: "flex" }}
-              label="OTP"
-              variant="outlined"
-              type="number"
-              required
-              value={OTP}
-              onChange={(e) => setOTP(e.target.value)}
-            />
-          </>
-        ) : null}
-        {expendForm === false ? (
-          <Button
-            sx={{ mt: 1, display: "flex" }}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={requestOTP}
-          >
-            Request OTP
-          </Button>
-        ) : null}
-
-        <span className="text-primary">Password</span>
-        <TextField
-          sx={{ mt: 1, display: "flex" }}
-          label="Password"
-          variant="outlined"
-          required
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <span className="text-primary">Confirm Password</span>
-        <TextField
-          sx={{ mt: 1, display: "flex" }}
-          label="Confirm Password"
-          variant="outlined"
-          required
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-
-        {/* <FormControl>
-          <FormLabel id="demo-controlled-radio-buttons-group">Register as?</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <FormControlLabel value="User" control={<Radio />} label="User" />
-            <FormControlLabel value="Hotel" control={<Radio />} label="Hotel" />
-          </RadioGroup>
-        </FormControl> */}
-
-        <Button
-          disabled={expendForm ? false : true}
-          sx={{ mt: 1, display: "flex" }}
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={submitHandler}
+    <>
+      <div class="bg-white relative lg:py-20">
+        <div
+          class="w-full lg:pt-20 flex justify-center items-center pt-5 pr-10 pb-20 pl-10 mt-0 mr-auto mb-0 ml-auto max-w-7xl
+        xl:px-5 lg:flex-row"
         >
-          Sign up
-        </Button>
-        <span className="text-center">
-          Already a member?{" "}
-          <Link to="/login" style={{ textDecoration: "none" }}>
-            Login
-          </Link>
-        </span>
-      </form>
-      <div id="recaptcha-container"></div>
-    </Box>
+          {/*  */}
+          <div class="w-full flex-row mx-auto mt-20 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
+            <div
+              class="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl
+            relative z-10"
+            >
+              <p class="w-full text-4xl font-medium text-center leading-snug font-serif">
+                Sign up for an account
+              </p>
+              {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+              {message && (
+                <ErrorMessage variant="danger">{message}</ErrorMessage>
+              )}
+              {loading && <Loading />}
+              <div class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+                <div class="relative">
+                  <TextField
+                    sx={{ display: "flex" }}
+                    label="Username"
+                    variant="outlined"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div class="relative">
+                  <TextField
+                    sx={{ display: "flex" }}
+                    label="Email"
+                    variant="outlined"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div class="relative">
+                  <TextField
+                    sx={{ mt: 1, display: "flex" }}
+                    label="Phone"
+                    variant="outlined"
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+                <div class="relative">
+                  {expendForm === true ? (
+                    <>
+                      <span className="text-primary">Enter OTP:</span>
+                      <TextField
+                        sx={{ mt: 1, display: "flex" }}
+                        label="OTP"
+                        variant="outlined"
+                        type="number"
+                        required
+                        value={OTP}
+                        onChange={(e) => setOTP(e.target.value)}
+                      />
+                    </>
+                  ) : null}
+                  {expendForm === false ? (
+                    <Button
+                      className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                      rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      onClick={requestOTP}
+                    >
+                      Request OTP
+                    </Button>
+                  ) : null}
+
+                  {/* <a
+                    class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                  >
+                    Submit
+                  </a> */}
+                </div>
+                <div class="relative">
+                  <TextField
+                    sx={{ mt: 1, display: "flex" }}
+                    label="Password"
+                    variant="outlined"
+                    required
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div class="relative">
+                  <TextField
+                    sx={{ mt: 1, display: "flex" }}
+                    label="Confirm Password"
+                    variant="outlined"
+                    required
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+                <div class="relative">
+                  <Button
+                    className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                    rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                    disabled={expendForm ? false : true}
+                    sx={{ mt: 1, display: "flex" }}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={submitHandler}
+                  >
+                    Sign up
+                  </Button>
+                </div>
+                <span className="text-center">
+                  Already a member?{" "}
+                  <Link to="/login" style={{ textDecoration: "underline" }}>
+                    Login
+                  </Link>
+                </span>
+              </div>
+              <div id="recaptcha-container"></div>
+            </div>
+            <svg
+              viewbox="0 0 91 91"
+              class="absolute top-0 left-0 z-0 w-32 h-32 -mt-12 -ml-12 text-yellow-300
+            fill-current"
+            >
+              <g stroke="none" strokewidth="1" fillrule="evenodd">
+                <g fillrule="nonzero">
+                  <g>
+                    <g>
+                      <circle cx="3.261" cy="3.445" r="2.72" />
+                      <circle cx="15.296" cy="3.445" r="2.719" />
+                      <circle cx="27.333" cy="3.445" r="2.72" />
+                      <circle cx="39.369" cy="3.445" r="2.72" />
+                      <circle cx="51.405" cy="3.445" r="2.72" />
+                      <circle cx="63.441" cy="3.445" r="2.72" />
+                      <circle cx="75.479" cy="3.445" r="2.72" />
+                      <circle cx="87.514" cy="3.445" r="2.719" />
+                    </g>
+                    <g transform="translate(0 12)">
+                      <circle cx="3.261" cy="3.525" r="2.72" />
+                      <circle cx="15.296" cy="3.525" r="2.719" />
+                      <circle cx="27.333" cy="3.525" r="2.72" />
+                      <circle cx="39.369" cy="3.525" r="2.72" />
+                      <circle cx="51.405" cy="3.525" r="2.72" />
+                      <circle cx="63.441" cy="3.525" r="2.72" />
+                      <circle cx="75.479" cy="3.525" r="2.72" />
+                      <circle cx="87.514" cy="3.525" r="2.719" />
+                    </g>
+                    <g transform="translate(0 24)">
+                      <circle cx="3.261" cy="3.605" r="2.72" />
+                      <circle cx="15.296" cy="3.605" r="2.719" />
+                      <circle cx="27.333" cy="3.605" r="2.72" />
+                      <circle cx="39.369" cy="3.605" r="2.72" />
+                      <circle cx="51.405" cy="3.605" r="2.72" />
+                      <circle cx="63.441" cy="3.605" r="2.72" />
+                      <circle cx="75.479" cy="3.605" r="2.72" />
+                      <circle cx="87.514" cy="3.605" r="2.719" />
+                    </g>
+                    <g transform="translate(0 36)">
+                      <circle cx="3.261" cy="3.686" r="2.72" />
+                      <circle cx="15.296" cy="3.686" r="2.719" />
+                      <circle cx="27.333" cy="3.686" r="2.72" />
+                      <circle cx="39.369" cy="3.686" r="2.72" />
+                      <circle cx="51.405" cy="3.686" r="2.72" />
+                      <circle cx="63.441" cy="3.686" r="2.72" />
+                      <circle cx="75.479" cy="3.686" r="2.72" />
+                      <circle cx="87.514" cy="3.686" r="2.719" />
+                    </g>
+                    <g transform="translate(0 49)">
+                      <circle cx="3.261" cy="2.767" r="2.72" />
+                      <circle cx="15.296" cy="2.767" r="2.719" />
+                      <circle cx="27.333" cy="2.767" r="2.72" />
+                      <circle cx="39.369" cy="2.767" r="2.72" />
+                      <circle cx="51.405" cy="2.767" r="2.72" />
+                      <circle cx="63.441" cy="2.767" r="2.72" />
+                      <circle cx="75.479" cy="2.767" r="2.72" />
+                      <circle cx="87.514" cy="2.767" r="2.719" />
+                    </g>
+                    <g transform="translate(0 61)">
+                      <circle cx="3.261" cy="2.846" r="2.72" />
+                      <circle cx="15.296" cy="2.846" r="2.719" />
+                      <circle cx="27.333" cy="2.846" r="2.72" />
+                      <circle cx="39.369" cy="2.846" r="2.72" />
+                      <circle cx="51.405" cy="2.846" r="2.72" />
+                      <circle cx="63.441" cy="2.846" r="2.72" />
+                      <circle cx="75.479" cy="2.846" r="2.72" />
+                      <circle cx="87.514" cy="2.846" r="2.719" />
+                    </g>
+                    <g transform="translate(0 73)">
+                      <circle cx="3.261" cy="2.926" r="2.72" />
+                      <circle cx="15.296" cy="2.926" r="2.719" />
+                      <circle cx="27.333" cy="2.926" r="2.72" />
+                      <circle cx="39.369" cy="2.926" r="2.72" />
+                      <circle cx="51.405" cy="2.926" r="2.72" />
+                      <circle cx="63.441" cy="2.926" r="2.72" />
+                      <circle cx="75.479" cy="2.926" r="2.72" />
+                      <circle cx="87.514" cy="2.926" r="2.719" />
+                    </g>
+                    <g transform="translate(0 85)">
+                      <circle cx="3.261" cy="3.006" r="2.72" />
+                      <circle cx="15.296" cy="3.006" r="2.719" />
+                      <circle cx="27.333" cy="3.006" r="2.72" />
+                      <circle cx="39.369" cy="3.006" r="2.72" />
+                      <circle cx="51.405" cy="3.006" r="2.72" />
+                      <circle cx="63.441" cy="3.006" r="2.72" />
+                      <circle cx="75.479" cy="3.006" r="2.72" />
+                      <circle cx="87.514" cy="3.006" r="2.719" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <svg
+              viewbox="0 0 91 91"
+              class="absolute bottom-0 right-0 z-0 w-32 h-32 -mb-12 -mr-12 text-indigo-500
+            fill-current"
+            >
+              <g stroke="none" strokewidth="1" fillrule="evenodd">
+                <g fillrule="nonzero">
+                  <g>
+                    <g>
+                      <circle cx="3.261" cy="3.445" r="2.72" />
+                      <circle cx="15.296" cy="3.445" r="2.719" />
+                      <circle cx="27.333" cy="3.445" r="2.72" />
+                      <circle cx="39.369" cy="3.445" r="2.72" />
+                      <circle cx="51.405" cy="3.445" r="2.72" />
+                      <circle cx="63.441" cy="3.445" r="2.72" />
+                      <circle cx="75.479" cy="3.445" r="2.72" />
+                      <circle cx="87.514" cy="3.445" r="2.719" />
+                    </g>
+                    <g transform="translate(0 12)">
+                      <circle cx="3.261" cy="3.525" r="2.72" />
+                      <circle cx="15.296" cy="3.525" r="2.719" />
+                      <circle cx="27.333" cy="3.525" r="2.72" />
+                      <circle cx="39.369" cy="3.525" r="2.72" />
+                      <circle cx="51.405" cy="3.525" r="2.72" />
+                      <circle cx="63.441" cy="3.525" r="2.72" />
+                      <circle cx="75.479" cy="3.525" r="2.72" />
+                      <circle cx="87.514" cy="3.525" r="2.719" />
+                    </g>
+                    <g transform="translate(0 24)">
+                      <circle cx="3.261" cy="3.605" r="2.72" />
+                      <circle cx="15.296" cy="3.605" r="2.719" />
+                      <circle cx="27.333" cy="3.605" r="2.72" />
+                      <circle cx="39.369" cy="3.605" r="2.72" />
+                      <circle cx="51.405" cy="3.605" r="2.72" />
+                      <circle cx="63.441" cy="3.605" r="2.72" />
+                      <circle cx="75.479" cy="3.605" r="2.72" />
+                      <circle cx="87.514" cy="3.605" r="2.719" />
+                    </g>
+                    <g transform="translate(0 36)">
+                      <circle cx="3.261" cy="3.686" r="2.72" />
+                      <circle cx="15.296" cy="3.686" r="2.719" />
+                      <circle cx="27.333" cy="3.686" r="2.72" />
+                      <circle cx="39.369" cy="3.686" r="2.72" />
+                      <circle cx="51.405" cy="3.686" r="2.72" />
+                      <circle cx="63.441" cy="3.686" r="2.72" />
+                      <circle cx="75.479" cy="3.686" r="2.72" />
+                      <circle cx="87.514" cy="3.686" r="2.719" />
+                    </g>
+                    <g transform="translate(0 49)">
+                      <circle cx="3.261" cy="2.767" r="2.72" />
+                      <circle cx="15.296" cy="2.767" r="2.719" />
+                      <circle cx="27.333" cy="2.767" r="2.72" />
+                      <circle cx="39.369" cy="2.767" r="2.72" />
+                      <circle cx="51.405" cy="2.767" r="2.72" />
+                      <circle cx="63.441" cy="2.767" r="2.72" />
+                      <circle cx="75.479" cy="2.767" r="2.72" />
+                      <circle cx="87.514" cy="2.767" r="2.719" />
+                    </g>
+                    <g transform="translate(0 61)">
+                      <circle cx="3.261" cy="2.846" r="2.72" />
+                      <circle cx="15.296" cy="2.846" r="2.719" />
+                      <circle cx="27.333" cy="2.846" r="2.72" />
+                      <circle cx="39.369" cy="2.846" r="2.72" />
+                      <circle cx="51.405" cy="2.846" r="2.72" />
+                      <circle cx="63.441" cy="2.846" r="2.72" />
+                      <circle cx="75.479" cy="2.846" r="2.72" />
+                      <circle cx="87.514" cy="2.846" r="2.719" />
+                    </g>
+                    <g transform="translate(0 73)">
+                      <circle cx="3.261" cy="2.926" r="2.72" />
+                      <circle cx="15.296" cy="2.926" r="2.719" />
+                      <circle cx="27.333" cy="2.926" r="2.72" />
+                      <circle cx="39.369" cy="2.926" r="2.72" />
+                      <circle cx="51.405" cy="2.926" r="2.72" />
+                      <circle cx="63.441" cy="2.926" r="2.72" />
+                      <circle cx="75.479" cy="2.926" r="2.72" />
+                      <circle cx="87.514" cy="2.926" r="2.719" />
+                    </g>
+                    <g transform="translate(0 85)">
+                      <circle cx="3.261" cy="3.006" r="2.72" />
+                      <circle cx="15.296" cy="3.006" r="2.719" />
+                      <circle cx="27.333" cy="3.006" r="2.72" />
+                      <circle cx="39.369" cy="3.006" r="2.72" />
+                      <circle cx="51.405" cy="3.006" r="2.72" />
+                      <circle cx="63.441" cy="3.006" r="2.72" />
+                      <circle cx="75.479" cy="3.006" r="2.72" />
+                      <circle cx="87.514" cy="3.006" r="2.719" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

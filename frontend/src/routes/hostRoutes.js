@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HotelProfile from "../screens/Host/HostProfile/HotelProfile";
 import NewHost from "../screens/User/NewHost/NewHost";
 
-function hostRoutes(userInfo) {
+function HostRoutes() {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   return (
     <Routes>
       <Route
@@ -21,4 +24,4 @@ function hostRoutes(userInfo) {
   );
 }
 
-export default hostRoutes;
+export default HostRoutes;

@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import BlogInfo from "../screens/General/BlogInfo/BlogInfo";
 import BlogPage from "../screens/General/BlogPage/BlogPage";
@@ -9,7 +10,9 @@ import ReservationPayment from "../screens/User/ReservationPayment/ReservationPa
 import ReservationSuccess from "../screens/User/ReservationSuccess/ReservationSuccess";
 import UserProfile from "../screens/User/UserProfile/UserProfile";
 
-function userRoutes({ userInfo }) {
+function UserRoutes() {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   return (
     <Routes>
       <Route path="" element={<HomePage />} />
@@ -29,4 +32,4 @@ function userRoutes({ userInfo }) {
   );
 }
 
-export default userRoutes;
+export default UserRoutes;

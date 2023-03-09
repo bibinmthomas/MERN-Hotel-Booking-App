@@ -18,6 +18,7 @@ function App() {
 
   useEffect(() => {
     console.log("admin", admin);
+    // console.log("userInfo", userInfo);
   }, []);
   return (
     <BrowserRouter>
@@ -47,8 +48,8 @@ function App() {
             }
           />
         </Routes>
-        <UserRoutes userInfo={userInfo} />
-        <HostRoutes userInfo={userInfo} />
+        <UserRoutes />
+        <HostRoutes />
       </>
       {admin ? null : <Footer />}
     </BrowserRouter>

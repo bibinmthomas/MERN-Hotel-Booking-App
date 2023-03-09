@@ -72,7 +72,7 @@ export const getPropertyData = () => async (dispatch) => {
     };
     const { data } = await axiosConfig.get(`/propertyFetch`, config);
     localStorage.setItem("propertyInfo", JSON.stringify(data));
-    await dispatch(propertyWorkingSuccess(data));
+    dispatch(propertyWorkingSuccess(data));
     // console.log("New property Data :", data);
   } catch (error) {
     const errorIs =

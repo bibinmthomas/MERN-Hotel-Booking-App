@@ -11,15 +11,21 @@ import IconButton from "@mui/joy/IconButton";
 import "./HomePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogData } from "../../../actions/blogAction";
+import { getPropertyData } from "../../../actions/propertyAction";
 function HomePage() {
   const dispatch = useDispatch();
   const blogData = useSelector((state) => state.blogCreate);
-  const { loading, error, blogInfo } = blogData;
+  const { blogInfo } = blogData;
+  const propertyData = useSelector((state) => state.propertyWorking);
+  const { propertyInfo } = propertyData;
   useEffect(() => {
-    console.log("Before dispatch...");
     dispatch(getBlogData());
-    if (blogInfo) {
-      console.log("bloginfo:",blogInfo);
+    dispatch(getPropertyData());
+    // blogFetch();
+    // propertyFetch();
+    if (blogInfo && propertyInfo) {
+      console.log("bloginfo:", blogInfo);
+      console.log("propertyInfo:", propertyInfo);
     }
   }, []);
   let first4 = blogInfo?.slice(0, 4);
@@ -76,7 +82,7 @@ function HomePage() {
         }}
       >
         <Grid container spacing={1}>
-          {hotels.map((item, index) => {
+          {propertyInfo.map((item, index) => {
             return (
               <Grid key={index} item xs>
                 <Card sx={{ minHeight: "300px", width: 260 }}>
@@ -97,7 +103,11 @@ function HomePage() {
                     <FavoriteBorderRoundedIcon className="FavPink" />
                   </IconButton>
                   <CardCover>
-                    <img src={item.pic} loading="lazy" alt="lol no pic" />
+                    <img
+                      src={item.propImages[0]}
+                      loading="lazy"
+                      alt="lol no pic"
+                    />
                   </CardCover>
                   <CardCover
                     sx={{
@@ -112,10 +122,10 @@ function HomePage() {
                       mb={1}
                       style={{ color: "white" }}
                     >
-                      {item.title}
+                      {item.propName}
                     </Typography>
                     <Typography style={{ color: "white" }}>
-                      {item.address}
+                      {item.address[0].city}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -179,13 +189,9 @@ function HomePage() {
                     >
                       {item.blogTitle}
                     </Typography>
-                    <Typography style={{ color: "white" }}>
-                      {/* {item.address} */}
+                    {/* <Typography style={{ color: "white" }}>
                       {item.blogContent.slice(0, 15) + "..."}
-                    </Typography>
-
-                      
-
+                    </Typography> */}
                   </CardContent>
                 </Card>
               </Grid>

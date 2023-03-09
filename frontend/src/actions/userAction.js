@@ -36,11 +36,8 @@ export const login = (email, password) => async (dispatch) => {
       },
       config
     );
-
     console.log(data);
-
     dispatch(userLoginSuccess(data));
-
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     const errorIs =
@@ -122,7 +119,8 @@ export const updateProfile = (user) => async (dispatch, getState) => {
 };
 
 export const newHost =
-  (user, hotelName, adhaarno, city, street, pinno) => async (dispatch,getState) => {
+  (user, hotelName, adhaarno, city, street, pinno) =>
+  async (dispatch, getState) => {
     try {
       const {
         userLogin: { userInfo },
