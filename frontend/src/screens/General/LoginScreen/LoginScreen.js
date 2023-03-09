@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 
-const LoginScreen = ({setAdmin}) => {
+const LoginScreen = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [error, setError] = useState(false);
@@ -25,11 +25,11 @@ const LoginScreen = ({setAdmin}) => {
   useEffect(() => {
     if (userInfo) {
       if(userInfo.isAdmin){
-        setAdmin(true)
+        props.setAdmin(true)
         navigate("/admin")
         return
       }
-      setAdmin(false)
+      props.setAdmin(false)
       navigate("/");
     }
   }, [userInfo]);

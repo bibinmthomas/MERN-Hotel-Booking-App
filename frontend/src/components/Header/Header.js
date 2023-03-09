@@ -106,7 +106,7 @@ function ResponsiveAppBar() {
   };
   
   return (
-      <AppBar className="px-3" color="transparent" position="fixed">
+      <AppBar className="px-3" color="transparent" position="absolute">
         {/* <Container > */}
           <Toolbar color="transparent" disableGutters>
             {/* PUT ICON HERE */}

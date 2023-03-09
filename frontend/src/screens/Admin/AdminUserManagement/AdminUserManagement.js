@@ -13,11 +13,8 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-// import Checkbox from '@mui/material/Checkbox';
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Switch from '@mui/material/Switch';
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
@@ -94,11 +91,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -286,7 +279,10 @@ export default function EnhancedTable() {
                 />
                 <TableBody>
                   {stableSort(userInfo, getComparator(order, orderBy))
-                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
                     ?.map((row, index) => {
                       const isItemSelected = isSelected(row.name);
                       const labelId = `enhanced-table-checkbox-${index}`;
