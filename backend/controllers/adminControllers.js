@@ -4,11 +4,15 @@ const generateToken = require("../utils/generateTokens");
 const User = require("../models/userModel");
 const Hotel = require("../models/hotelModel");
 const Property = require("../models/propertyModel");
-
+const Reservation = require("../models/reservationModel");
 module.exports = {
   getUsers: asyncHandler(async (req, res) => {
     const users = await User.find({ role: "User", isAdmin: false });
     res.json(users);
+  }),
+  getReservation: asyncHandler(async (req, res) => {
+    const reservation = await Reservation.find({ userId: req.user._id });
+    res.json(reservation);
   }),
   getHotels: asyncHandler(async (req, res) => {
     const hotelUsers = await User.find({ role: "Hotel" });
@@ -62,5 +66,12 @@ module.exports = {
     await findProp.save();
     if (findProp) res.status(201).json(findProp);
     else res.status(400);
+  }),
+  deleteReservation: asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    console.log("Id:", id);
+    const reservationDelete = await Reservation.deleteOne({ _id: id });
+    console.log("Deleted:", reservationDelete);
+    res.json({ message: "Reservation Deleted...." });
   }),
 };

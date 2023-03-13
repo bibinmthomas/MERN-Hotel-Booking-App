@@ -29,28 +29,6 @@ function HomePage() {
     }
   }, []);
   let first4 = blogInfo?.slice(0, 4);
-  const hotels = [
-    {
-      title: "Good Apartment 1",
-      pic: "https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      address: "California,USA",
-    },
-    {
-      title: "Good Apartment 2",
-      pic: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      address: "Miami,LA,USA",
-    },
-    {
-      title: "Good Apartment 3",
-      pic: "https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      address: "California,USA",
-    },
-    {
-      title: "Good Apartment 4",
-      pic: "https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      address: "Miami,LA,USA",
-    },
-  ];
 
   return (
     <>

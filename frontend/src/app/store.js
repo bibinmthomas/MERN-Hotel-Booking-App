@@ -10,6 +10,7 @@ import propertyCreateReducer from "../features/property/propertyCreateSlice";
 import propertyWorkingReducer from "../features/property/propertyWorkingSlice";
 import reservationCreateReducer from "../features/reservation/reservationCreateSlice";
 import reservationCheckReducer from "../features/reservation/reservationCheckSlice";
+import reservationWorkingReducer from "../features/reservation/reservationWorkingSlice";
 // import thunk from "redux-thunk";
 
 const store = configureStore({
@@ -25,6 +26,7 @@ const store = configureStore({
     propertyWorking: propertyWorkingReducer,
     reservationCreate: reservationCreateReducer,
     reservationCheck: reservationCheckReducer,
+    reservationWorking: reservationWorkingReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

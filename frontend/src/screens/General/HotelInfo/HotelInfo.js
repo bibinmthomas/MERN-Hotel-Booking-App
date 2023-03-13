@@ -23,7 +23,7 @@ import {
   checkValidDates,
 } from "../../../actions/reservationAction";
 import Loading from "../../../components/Loading";
-import DOMpurify from "dompurify"
+import DOMpurify from "dompurify";
 
 Date.prototype.addDays = function (days) {
   var dat = new Date(this.valueOf());
@@ -361,7 +361,9 @@ function HotelInfo() {
                     <div
                       className="w-5/6 my-5"
                       dangerouslySetInnerHTML={{
-                        __html: DOMpurify.sanitize(propertyCurrent?.propDescription),
+                        __html: DOMpurify.sanitize(
+                          propertyCurrent?.propDescription
+                        ),
                       }}
                     />
                     <div>Type:{propertyCurrent?.propType}</div>
@@ -554,7 +556,6 @@ function HotelInfo() {
                                         <span
                                           onClick={() => {
                                             setChildCount((obj) => obj - 1);
-                                            // decreaseChildCount();
                                           }}
                                           class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                         >
@@ -570,7 +571,6 @@ function HotelInfo() {
                                         <span
                                           onClick={() => {
                                             setChildCount((obj) => obj + 1);
-                                            // increaseChildCount();
                                           }}
                                           class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                         >

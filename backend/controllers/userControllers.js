@@ -25,9 +25,9 @@ function getDates(startDate, stopDate) {
 module.exports = {
   registerUser: asyncHandler(async (req, res) => {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const { name, email, phone, password } = req.body;
-      console.log(name, email, phone, password);
+      // console.log(name, email, phone, password);
       const userExists = await User.findOne({ email });
 
       if (userExists) {

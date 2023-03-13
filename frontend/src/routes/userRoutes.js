@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
+import Reservations from "../components/Reservations/Reservations";
 import BlogInfo from "../screens/General/BlogInfo/BlogInfo";
 import BlogPage from "../screens/General/BlogPage/BlogPage";
 import HomePage from "../screens/General/HomePage/HomePage";
@@ -26,6 +27,12 @@ function UserRoutes() {
         path="user-profile"
         element={
           userInfo?.role === "User" ? <UserProfile /> : <Navigate to="/" />
+        }
+      />
+            <Route
+        path="user-profile/reservation/:id"
+        element={
+          userInfo?.role === "User" ? <Reservations /> : <Navigate to="/" />
         }
       />
     </Routes>

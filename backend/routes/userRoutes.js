@@ -21,7 +21,7 @@ const {
   postProperty,
   getProperty,
 } = require("../controllers/hostControllers");
-const { getUsers } = require("../controllers/adminControllers");
+const { getUsers, getReservation, deleteReservation } = require("../controllers/adminControllers");
 const protect = require("../middlewares/authUserMiddleware");
 //stripe implementation...
 const stripe = require("stripe")(
@@ -40,6 +40,7 @@ const router = express.Router();
 router.route("/getUsers").get(getUsers);
 router.route("/blogFetch").get(getBlogs);
 router.route("/propertyFetch").get(getProperty);
+router.route("/reservationFetch/").get(protect,getReservation);
 router.route("/:id").get(getUserById);
 router.route("/register").post(registerUser);
 router.route("/login").post(authUser);
@@ -75,5 +76,6 @@ router.route("/create-payment-intent").post(async (req, res) => {
   });
 });
 router.route("/confirmPayment").post(confirmPayment);
+router.route("/deleteReservation").post(protect,deleteReservation);
 
 module.exports = router;

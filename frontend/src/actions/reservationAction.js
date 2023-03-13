@@ -13,6 +13,12 @@ import {
   reservationCheckReq,
   reservationCheckSuccess,
 } from "../features/reservation/reservationCheckSlice";
+import {
+  reservationWorkingReq,
+  reservationWorkingFail,
+  reservationWorkingLoadingOff,
+  reservationWorkingSuccess,
+} from "../features/reservation/reservationWorkingSlice";
 
 export const checkValidDates = (id, dateArray) => async (dispatch) => {
   try {
@@ -102,6 +108,54 @@ export const confirmPayment = (id) => async (dispatch) => {
       config
     );
     console.log(data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const reservationFetch = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    console.log("in dispatch:", id);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await dispatch(reservationWorkingReq());
+    const { data } = await axiosConfig.get(`/reservationFetch/`, config);
+    console.log("Recieved from backend:", data);
+    await dispatch(reservationWorkingSuccess(data));
+    dispatch(reservationWorkingLoadingOff());
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const deleteReservation = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    console.log("in dispatch:", id);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await dispatch(reservationWorkingReq());
+    const { data } = await axiosConfig.post(
+      `/deleteReservation`,
+      {
+        id,
+      },
+      config
+    );
+    console.log("Recieved from backend:", data);
+    await dispatch(reservationWorkingFail(data));
+    dispatch(reservationWorkingLoadingOff());
   } catch (error) {
     console.log(error.message);
   }
