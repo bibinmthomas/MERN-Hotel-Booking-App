@@ -287,54 +287,6 @@ const LoginScreen = (props) => {
           </div>
         </div>
       </div>
-      {/* <Box
-        sx={{
-          // marginTop: "10rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-        {loading && <Loading />}
-        <form sx={{ mt: 1 }} onSubmit={submitHandler}>
-          <span className="text-primary">Email</span>
-          <TextField
-            sx={{ mt: 1, display: "flex" }}
-            label="Email"
-            variant="outlined"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <span className="text-primary">Password</span>
-          <TextField
-            sx={{ mt: 1, display: "flex" }}
-            label="Password"
-            variant="outlined"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <Button
-            sx={{ mt: 1, display: "flex" }}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={submitHandler}
-          >
-            Sign in
-          </Button>
-          <span className="text-center">
-            Not a member?{" "}
-            <Link to="/Register" style={{ textDecoration: "none" }}>
-              Register
-            </Link>
-          </span>
-        </form>
-      </Box> */}
     </>
   );
 };

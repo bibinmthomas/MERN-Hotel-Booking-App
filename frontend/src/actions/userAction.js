@@ -75,8 +75,11 @@ export const register = (name, email, phone, password) => async (dispatch) => {
     );
 
     // console.log(data);
-
-    dispatch(userRegisterSuccess(data));
+    if(data.message){
+      dispatch(userRegisterFail(data.message))
+    }else{
+      dispatch(userRegisterSuccess(data));
+    }
     dispatch(userLoginSuccess(data));
 
     localStorage.setItem("userInfo", JSON.stringify(data));
@@ -119,7 +122,7 @@ export const updateProfile = (user) => async (dispatch, getState) => {
 };
 
 export const newHost =
-  (user, hotelName, adhaarno, city, street, pinno) =>
+  (user, hotelName, adhaarno, city, street, pinno,URL) =>
   async (dispatch, getState) => {
     try {
       const {
@@ -142,6 +145,7 @@ export const newHost =
           city,
           street,
           pinno,
+          URL
         },
         config
       );

@@ -424,11 +424,15 @@ function HotelInfo() {
                           {/* Rating */}
                           <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
                             <h2 class="leading-relaxed">
-                              ₹
+                             Rent Rate: ₹{totalPrice}
+                              /night
+                            </h2>
+                            <h2 class="leading-relaxed">
+                              Total Price:₹
                               {checkout?.getDate() === checkin?.getDate()
                                 ? "Invalid"
                                 : totalPrice}
-                              /night
+                              /-
                             </h2>
                             <div class="flex items-center">
                               <svg

@@ -12,9 +12,13 @@ const hotelSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    adhaarno:{
-      type:String,
-      required: true
+    adhaarno: {
+      type: String,
+      required: true,
+    },
+    URL: {
+      type: String,
+      default: "",
     },
     address: [
       {

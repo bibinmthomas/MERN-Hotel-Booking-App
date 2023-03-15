@@ -32,7 +32,10 @@ module.exports = {
 
       if (userExists) {
         res.status(400);
-        throw new Error("User Already exists");
+        // throw new Error("User Already exists");
+        res.json({
+          message: "User Already exists",
+        });
       }
       const user = await User.create({
         name,
@@ -87,7 +90,7 @@ module.exports = {
     }
   }),
   newHost: asyncHandler(async (req, res) => {
-    const { hotelName, adhaarno, city, street, pinno } = req.body;
+    const { hotelName, adhaarno, city, street, pinno, URL } = req.body;
     console.log("req.user:", req.user);
     const findUser = await User.findOne({ _id: req.user._id });
 
@@ -108,6 +111,7 @@ module.exports = {
       hotelName,
       adhaarno,
       address,
+      URL,
       blocked: true,
     });
 
@@ -118,7 +122,7 @@ module.exports = {
         adhaarno: hotel.adhaarno,
         address: hotel.address,
         phone: hotel.phone,
-        token: generateToken(hotel._id),
+        blocked: hotel.blocked,
       });
     } else {
       res.status(400);

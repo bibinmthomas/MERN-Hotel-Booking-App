@@ -75,6 +75,7 @@ function HotelProfile() {
       hostInfo.map((obj) => {
         if (obj.user === userInfo._id) {
           setHost(obj);
+          console.log("host:", obj);
         }
       });
     } else {
@@ -510,7 +511,7 @@ function HotelProfile() {
               {/* View Reservations End */}
             </Grid>
 
-            {host?.blocked ? null : (
+            {!host.blocked ? null : (
               <>
                 {/* Create Blog */}
                 {/* <Container> */}

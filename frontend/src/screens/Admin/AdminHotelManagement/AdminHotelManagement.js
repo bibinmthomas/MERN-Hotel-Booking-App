@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import DangerousIcon from "@mui/icons-material/Dangerous";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { getHostDetails, hostBlock } from "../../../actions/adminAction";
 
 function descendingComparator(a, b, orderBy) {
@@ -86,6 +87,12 @@ const headCells = [
     label: "Status",
   },
   {
+    id: "Verify",
+    numeric: false,
+    disablePadding: false,
+    label: "Verify",
+  },
+  {
     id: "Action",
     numeric: true,
     disablePadding: false,
@@ -102,8 +109,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells?.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -211,10 +217,10 @@ export default function EnhancedTable() {
   const adminInfo = useSelector((state) => state.hotelWorking);
   const { loading, hostInfo, error } = adminInfo;
 
-  React.useEffect(()=>{
-    dispatch(getHostDetails())
+  React.useEffect(() => {
+    dispatch(getHostDetails());
     console.log(hostInfo);
-  },[])
+  }, []);
   const HandleBlocks = (userId) => {
     dispatch(hostBlock(userId));
   };
@@ -271,7 +277,10 @@ export default function EnhancedTable() {
                 />
                 <TableBody>
                   {stableSort(hostInfo, getComparator(order, orderBy))
-                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
                     ?.map((row, index) => {
                       const isItemSelected = isSelected(row.hotelName);
                       const labelId = `enhanced-table-checkbox-${index}`;
@@ -302,6 +311,13 @@ export default function EnhancedTable() {
                             ) : (
                               <DoneOutlineIcon color="success" />
                             )}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton>
+                              <a href={row.URL} target="_blank">
+                                <VisibilityIcon />
+                              </a>
+                            </IconButton>
                           </TableCell>
                           <TableCell align="right">
                             <Button

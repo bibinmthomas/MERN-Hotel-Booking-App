@@ -10,6 +10,8 @@
     "@mui/joy": "^5.0.0-alpha.66",
     "@mui/material": "^5.11.7",
     "@mui/x-date-pickers": "^5.0.20",
+    "@react-pdf-viewer/core": "^3.11.0",
+    "@react-pdf-viewer/default-layout": "^3.11.0",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.2",
     "@stripe/react-stripe-js": "^1.16.5",
