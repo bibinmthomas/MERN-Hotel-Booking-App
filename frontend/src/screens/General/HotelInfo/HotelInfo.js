@@ -1,3 +1,5 @@
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Container,
   TextField,
@@ -93,6 +95,29 @@ function HotelInfo() {
                 (propertyCurrent?.propRate / 2) * elderCount
             );
           }
+        }
+        if (checkin.toString() === checkout.toString()) {
+          toast.warn("dates same", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else if (checkin > checkout) {
+          // toast.error("dates messed up!!!", {
+          //   position: "top-center",
+          //   autoClose: 5000,
+          //   hideProgressBar: false,
+          //   closeOnClick: true,
+          //   pauseOnHover: true,
+          //   draggable: true,
+          //   progress: undefined,
+          //   theme: "light",
+          // });
         }
       }
       console.log(
@@ -236,6 +261,18 @@ function HotelInfo() {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <Backdrop open={open}>
           <CircularProgress color="inherit" />
         </Backdrop>
@@ -424,13 +461,13 @@ function HotelInfo() {
                           {/* Rating */}
                           <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
                             <h2 class="leading-relaxed">
-                             Rent Rate: ₹{totalPrice}
+                              Rent Rate: ₹{propertyCurrent?.propRate}
                               /night
                             </h2>
                             <h2 class="leading-relaxed">
                               Total Price:₹
                               {checkout?.getDate() === checkin?.getDate()
-                                ? "Invalid"
+                                ? propertyCurrent.propRate
                                 : totalPrice}
                               /-
                             </h2>
@@ -488,7 +525,21 @@ function HotelInfo() {
                                 <DesktopDatePicker
                                   label=""
                                   value={checkin}
-                                  onChange={handleCheckinChange}
+                                  onChange={(obj) => {
+                                    if (checkin > checkout) {
+                                      toast.error("dates messed up!!!", {
+                                        position: "top-center",
+                                        autoClose: 5000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        theme: "light",
+                                      });
+                                    }
+                                    handleCheckinChange(obj);
+                                  }}
                                   renderInput={(params) => (
                                     <TextField {...params} />
                                   )}
@@ -559,7 +610,8 @@ function HotelInfo() {
                                       <div class="flex items-center border-gray-100">
                                         <span
                                           onClick={() => {
-                                            setChildCount((obj) => obj - 1);
+                                            if (childCount > 0)
+                                              setChildCount((obj) => obj - 1);
                                           }}
                                           class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                         >
@@ -592,7 +644,8 @@ function HotelInfo() {
                                       <div class="flex items-center border-gray-100">
                                         <span
                                           onClick={() => {
-                                            setAdultCount((obj) => obj - 1);
+                                            if (adultCount > 1)
+                                              setAdultCount((obj) => obj - 1);
                                           }}
                                           class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                         >
@@ -625,7 +678,8 @@ function HotelInfo() {
                                       <div class="flex items-center border-gray-100">
                                         <span
                                           onClick={() => {
-                                            setElderCount((obj) => obj - 1);
+                                            if (elderCount > 0)
+                                              setElderCount((obj) => obj - 1);
                                           }}
                                           class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                         >

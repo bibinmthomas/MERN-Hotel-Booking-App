@@ -35,11 +35,11 @@ function HostRoutes() {
       <Route
         path="hotel-profile"
         element={
-          userInfo?.role === "Hotel" && check ? (
+          userInfo?.role === "Hotel" ? (
             <HotelProfile />
           ) : (
-            <UserProfile />
-            // <Navigate to="/" />
+            // <UserProfile />
+            <Navigate to="/user-profile" />
           )
         }
       />

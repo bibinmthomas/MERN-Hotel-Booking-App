@@ -12,6 +12,7 @@ import "./HomePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogData } from "../../../actions/blogAction";
 import { getPropertyData } from "../../../actions/propertyAction";
+import Search from "../../../components/Search/Search";
 function HomePage() {
   const dispatch = useDispatch();
   const blogData = useSelector((state) => state.blogCreate);
@@ -21,8 +22,6 @@ function HomePage() {
   useEffect(() => {
     dispatch(getBlogData());
     dispatch(getPropertyData());
-    // blogFetch();
-    // propertyFetch();
     if (blogInfo && propertyInfo) {
       console.log("bloginfo:", blogInfo);
       console.log("propertyInfo:", propertyInfo);
@@ -42,6 +41,9 @@ function HomePage() {
           backgroundSize: "cover",
         }}
       ></div>
+      <div className="-my-7">
+        <Search />
+      </div>
 
       {/* Hotels */}
       <Typography marginLeft="3rem" marginTop="4rem" variant="h3" gutterBottom>
