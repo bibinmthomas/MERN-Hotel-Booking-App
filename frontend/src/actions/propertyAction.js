@@ -16,10 +16,13 @@ import axiosConfig from "../axiosConfig";
 
 export const newProperty =
   (
-    // hostId,
     hostName,
     propName,
     propType,
+    livingRoom,
+    view,
+    bedRoom,
+    kitchen,
     propPhone,
     propDescription,
     propStreet,
@@ -47,6 +50,10 @@ export const newProperty =
           hostName,
           propName,
           propType,
+          livingRoom,
+          view,
+          bedRoom,
+          kitchen,
           propPhone,
           propDescription,
           propStreet,

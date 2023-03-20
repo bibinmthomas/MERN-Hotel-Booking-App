@@ -134,6 +134,10 @@ module.exports = {
         hostName,
         propName,
         propType,
+        livingRoom,
+        view,
+        bedRoom,
+        kitchen,
         propPhone,
         propDescription,
         propStreet,
@@ -149,11 +153,18 @@ module.exports = {
           street: propStreet,
           pinno: propPin,
         };
+        const roomTypes = {
+          livingRoom: livingRoom,
+          view: view,
+          bedRoom: bedRoom,
+          kitchen: kitchen,
+        };
         const property = await Property.create({
           hostId: req.user._id,
           hostName,
           propName,
           propType,
+          roomTypes,
           phone: propPhone,
           propDescription,
           address,

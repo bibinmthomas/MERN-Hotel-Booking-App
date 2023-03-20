@@ -38,7 +38,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import { useDispatch, useSelector } from "react-redux";
 
-function AddNewProperties({setNewBlogReload,newBlogReload}) {
+function AddNewProperties({ setNewBlogReload, newBlogReload }) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const hotelLogin = useSelector((state) => state.userLogin);
@@ -55,6 +55,10 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
   const [propCity, setPropCity] = useState("");
   const [propPin, setPropPin] = useState(0);
   const [propRate, setPropRate] = useState(0);
+  const [livingRoom, setLivingRoom] = useState(1);
+  const [view, setView] = useState(0);
+  const [bedRoom, setBedRoom] = useState(1);
+  const [kitchen, setKitchen] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
 
   useEffect(() => {
@@ -94,19 +98,27 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
     });
   };
 
-  const handlePropertySubmit = async() => {
+  const handlePropertySubmit = async () => {
     if (
       (propName &&
         propType &&
+        livingRoom &&
+        view &&
+        bedRoom &&
+        kitchen &&
         propPhone &&
         propDescription &&
         propStreet &&
         propCity &&
         propPin &&
-        (propRate > 3000 )) !== ""
+        propRate > 3000) !== ""
     ) {
       console.log("propName:", propName);
       console.log("propType:", propType);
+      console.log("livingRoom:", livingRoom);
+      console.log("view:", view);
+      console.log("bedRoom:", bedRoom);
+      console.log("Kitchen:", kitchen);
       console.log("propPhone:", propPhone);
       console.log("propDescription:", propDescription);
       console.log("propStreet:", propStreet);
@@ -119,10 +131,13 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
     }
     await dispatch(
       newProperty(
-        // hostId,
         hostName,
         propName,
         propType,
+        livingRoom,
+        view,
+        bedRoom,
+        kitchen,
         propPhone,
         propDescription,
         propStreet,
@@ -132,9 +147,9 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
         propImages
       )
     );
-    setPropImages([])
-    setImageFiles([])
-    setNewBlogReload(!newBlogReload)
+    setPropImages([]);
+    setImageFiles([]);
+    setNewBlogReload(!newBlogReload);
     handleClose();
   };
 
@@ -220,17 +235,123 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
                           label="Shared"
                         />
                       </RadioGroup>
-                      {/* {propType === "Shared" && <>
-                      <input
-                      onChange={(e) => {
-                        setPropStreet(e.target.value);
-                      }}
-                      class="w-full rounded-lg border-gray-200 p-3 text-sm"
-                      placeholder="No. of tenant"
-                      type="text"
-                      id="name"
-                    />{" "}
-                      </>} */}
+                      {propType ? (
+                        <div>
+                          <div class="flex justify-between gap-4">
+                            <label class="leading-loose">Living Room: </label>
+
+                            <div class="flex items-center border-gray-100">
+                              <span
+                                onClick={() => {
+                                  if (livingRoom > 1)
+                                    setLivingRoom((obj) => obj - 1);
+                                }}
+                                class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                -{" "}
+                              </span>
+                              <input
+                                class="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+                                type="number"
+                                value={livingRoom}
+                                min="1"
+                              />
+                              <span
+                                onClick={() => {
+                                  setLivingRoom((obj) => obj + 1);
+                                }}
+                                class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                +{" "}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="flex justify-between gap-4">
+                            <label class="leading-loose">View: </label>
+
+                            <div class="flex items-center border-gray-100">
+                              <span
+                                onClick={() => {
+                                  if (view > 0) setView((obj) => obj - 1);
+                                }}
+                                class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                -{" "}
+                              </span>
+                              <input
+                                class="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+                                type="number"
+                                value={view}
+                                min="1"
+                              />
+                              <span
+                                onClick={() => {
+                                  setView((obj) => obj + 1);
+                                }}
+                                class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                +{" "}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="flex justify-between gap-4">
+                            <label class="leading-loose">Bedroom: </label>
+
+                            <div class="flex items-center border-gray-100">
+                              <span
+                                onClick={() => {
+                                  if (bedRoom > 1) setBedRoom((obj) => obj - 1);
+                                }}
+                                class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                -{" "}
+                              </span>
+                              <input
+                                class="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+                                type="number"
+                                value={bedRoom}
+                                min="1"
+                              />
+                              <span
+                                onClick={() => {
+                                  setBedRoom((obj) => obj + 1);
+                                }}
+                                class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                              >
+                                {" "}
+                                +{" "}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="flex justify-between gap-4">
+                            <spam class="leading-loose">Kitchen:</spam>
+                            <RadioGroup
+                              class="flex items-center border-gray-100"
+                              row
+                              aria-labelledby="demo-controlled-radio-buttons-group"
+                              name="controlled-radio-buttons-group"
+                              value={kitchen}
+                              onChange={(e) => setKitchen(e.target.value)}
+                            >
+                              <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                              />
+                              <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                              />
+                            </RadioGroup>
+                          </div>
+                        </div>
+                      ) : null}
                     </FormControl>
                     <input
                       onChange={(e) => {
@@ -273,15 +394,15 @@ function AddNewProperties({setNewBlogReload,newBlogReload}) {
                   <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
                     <form action="" class="space-y-4">
                       <div>
-                      <input
-                      onChange={(e) => {
-                        setPropRate(e.target.value);
-                      }}
-                      class="w-full rounded-lg border-gray-200 p-3 text-sm"
-                      placeholder="Price Rate"
-                      type="number"
-                      id="name"
-                    />
+                        <input
+                          onChange={(e) => {
+                            setPropRate(e.target.value);
+                          }}
+                          class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                          placeholder="Price Rate"
+                          type="number"
+                          id="name"
+                        />
                       </div>
                       <div>
                         <label class="sr-only" for="message">

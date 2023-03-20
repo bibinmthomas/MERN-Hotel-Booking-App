@@ -23,6 +23,8 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [OTP, setOTP] = useState();
   const [expendForm, setExpendForm] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [OTPRequsted, setOTPRequested] = useState(false);
 
   //firebase trial
   // const [otp, setotp] = useState("");
@@ -35,27 +37,47 @@ const RegisterScreen = () => {
   const { loading, error, userInfo } = userRegister;
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //     console.log(OTP);
-  // }, [OTP]);
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 300);
+
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const remainingSeconds = timeLeft % 60;
+
+  const handleClick = (e) => {
+    if (timeLeft > 0) return;
+    setTimeLeft(300);
+    console.log("run function now!!!");
+    requestOTP(e);
+    setOTPRequested(true);
+  };
 
   const generateRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+          },
         },
-      },
-      authentication
-    );
+        authentication
+      );
+    }
   };
 
   const requestOTP = (e) => {
     e.preventDefault();
     if (phone.length >= 12) {
       setExpendForm(true);
+      // recapcha call
       generateRecaptcha();
       const appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(authentication, phone, appVerifier)
@@ -176,18 +198,27 @@ const RegisterScreen = () => {
                       />
                     </>
                   ) : null}
-                  {/* {expendForm === false ? ( */}
-                    <Button
-                      className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
-                      rounded-lg transition duration-200 hover:bg-indigo-600 ease"
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      onClick={requestOTP}
-                    >
-                      Request OTP
-                    </Button>
-                  {/* ) : null} */}
+                  <Button
+                    className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClick}
+                    disabled={timeLeft > 0 && OTPRequsted}
+                  >
+                    {!OTPRequsted
+                      ? "Request OTP"
+                      : timeLeft > 0 && OTPRequsted
+                      ? `Resend OTP in ${minutes
+                          .toString()
+                          .padStart(2, "0")}:${remainingSeconds
+                          .toString()
+                          .padStart(2, "0")} seconds`
+                      : OTPRequsted && timeLeft === 0
+                      ? "Resend OTP"
+                      : null}
+                  </Button>
                 </div>
                 <div class="relative">
                   <TextField

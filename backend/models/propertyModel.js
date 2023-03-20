@@ -20,13 +20,19 @@ const propertySchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    propRate:{
-      type:Number,
-      min:3000
+    propRate: {
+      type: Number,
+      min: 3000,
     },
     villaDetails: {},
     apartmentDetails: {},
     sharedDetails: {},
+    roomTypes: {
+      livingRoom: Number,
+      view: Number,
+      bedRoom: Number,
+      kitchen:Boolean,
+    },
     propDescription: {
       type: String,
       required: true,

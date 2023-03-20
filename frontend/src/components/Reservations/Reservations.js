@@ -278,10 +278,6 @@ function Reservations() {
                       </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
-                      {/* {Object.keys(reservationInfo).length == 0 ? (
-                        <div>None</div>
-                      ) : ( */}
-                      {/* <div> */}
                       {reservationInfo.map((item, index) => {
                         return (
                           <tr class="border-b border-gray-200 hover:bg-gray-100">

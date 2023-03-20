@@ -511,10 +511,9 @@ function HotelProfile() {
               {/* View Reservations End */}
             </Grid>
 
-            {!host.blocked ? null : (
+            {host.blocked ? null : (
               <>
                 {/* Create Blog */}
-                {/* <Container> */}
                 <Grid item xs={2}>
                   <Typography display="inline" variant="h5">
                     Create Blog
@@ -524,9 +523,8 @@ function HotelProfile() {
                   </IconButton>
                   {createBlog}
                 </Grid>
-                {/* </Container> */}
                 {/* View This Hosts Blogs */}
-                {/* <Container style={{ position: "relative" }}> */}
+
                 <Grid
                   container
                   className="justify-items-center"
@@ -570,13 +568,6 @@ function HotelProfile() {
                                 >
                                   {item.blogTitle}
                                 </Typography>
-
-                                {/* display html */}
-                                {/* <div
-                      style={{ color: "white" }}
-                      // className="preview"
-                      dangerouslySetInnerHTML={{ __html: item.blogContent }}
-                    /> */}
                               </Link>
                             </CardContent>
                           </Card>
@@ -584,15 +575,11 @@ function HotelProfile() {
                       );
                   })}
                 </Grid>
-                {/* </Container> */}
                 {/* Create Hotels */}
-                {/* <Container> */}
                 <AddNewProperties
                   setNewBlogReload={setNewBlogReload}
                   newBlogReload={newBlogReload}
                 />
-                {/* </Container> */}
-                {/* <Container style={{ position: "relative" }}> */}
                 <Grid
                   container
                   className="justify-items-center"
@@ -640,13 +627,6 @@ function HotelProfile() {
                                 >
                                   BY:{item.hostName}
                                 </Typography>
-
-                                {/* display html */}
-                                {/* <div
-                      style={{ color: "white" }}
-                      // className="preview"
-                      dangerouslySetInnerHTML={{ __html: item.blogContent }}
-                    /> */}
                               </Link>
                             </CardContent>
                           </Card>
