@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Divider, Typography } from "@mui/material";
 import Card from "@mui/joy/Card";
@@ -19,15 +19,32 @@ function HomePage() {
   const { blogInfo } = blogData;
   const propertyData = useSelector((state) => state.propertyWorking);
   const { propertyInfo } = propertyData;
+  const searchData = useSelector((state) => state.searchWorking);
+  const { searchInfo, searchType } = searchData;
+  const [blogValues, setBlogValues] = useState([]);
+  const [propertyValues, setPropertyValues] = useState([]);
   useEffect(() => {
     dispatch(getBlogData());
     dispatch(getPropertyData());
     if (blogInfo && propertyInfo) {
       console.log("bloginfo:", blogInfo);
       console.log("propertyInfo:", propertyInfo);
+      if (searchInfo && searchType) {
+        console.log("searchInfo", searchInfo);
+        console.log("searchType", searchType);
+        if (searchType === "Hotels") {
+          setPropertyValues(searchInfo);
+          setBlogValues(blogInfo);
+        } else {
+          setPropertyValues(propertyInfo);
+          setBlogValues(searchInfo);
+        }
+      } else {
+        setPropertyValues(propertyInfo);
+        setBlogValues(blogInfo);
+      }
     }
-  }, []);
-  let first4 = blogInfo?.slice(0, 4);
+  }, [searchInfo]);
 
   return (
     <>
@@ -62,7 +79,7 @@ function HomePage() {
         }}
       >
         <Grid container spacing={1}>
-          {propertyInfo.map((item, index) => {
+          {propertyValues.map((item, index) => {
             return (
               <Grid key={index} item xs>
                 <Card sx={{ minHeight: "300px", width: 260 }}>
@@ -131,7 +148,7 @@ function HomePage() {
         }}
       >
         <Grid container spacing={1}>
-          {first4?.map((item, index) => {
+          {blogValues?.map((item, index) => {
             return (
               <Grid key={index} item xs>
                 <Card sx={{ minHeight: "300px", width: 260 }}>

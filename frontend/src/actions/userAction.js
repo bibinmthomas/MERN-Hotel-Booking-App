@@ -17,6 +17,8 @@ import {
   hotelCreateFail,
 } from "../features/hotels/hotelCreateSlice";
 
+import {searchWorkingSuccess} from "../features/users/searchSlice"
+
 import axiosConfig from "../axiosConfig";
 
 export const login = (email, password) => async (dispatch) => {
@@ -75,9 +77,9 @@ export const register = (name, email, phone, password) => async (dispatch) => {
     );
 
     // console.log(data);
-    if(data.message){
-      dispatch(userRegisterFail(data.message))
-    }else{
+    if (data.message) {
+      dispatch(userRegisterFail(data.message));
+    } else {
       dispatch(userRegisterSuccess(data));
     }
     dispatch(userLoginSuccess(data));
@@ -122,7 +124,7 @@ export const updateProfile = (user) => async (dispatch, getState) => {
 };
 
 export const newHost =
-  (user, hotelName, adhaarno, city, street, pinno,URL) =>
+  (user, hotelName, adhaarno, city, street, pinno, URL) =>
   async (dispatch, getState) => {
     try {
       const {
@@ -145,7 +147,7 @@ export const newHost =
           city,
           street,
           pinno,
-          URL
+          URL,
         },
         config
       );
@@ -167,12 +169,36 @@ export const getNewHostData = (user) => async (dispatch) => {
         "Content-type": "application/json",
       },
     };
-
     const { data } = await axiosConfig.get(`/${user}`, config);
-
     localStorage.setItem("userInfo", JSON.stringify(data));
     dispatch(userLoginSuccess(data));
     console.log("New Data :", data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const searchHotels = (value) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    console.log("from Dispatch:", value);
+    const { data } = await axiosConfig.post(`searchHotels`,{value}, config);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const searchBlogs = (value) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    console.log("from Dispatch:", value);
+    const { data } = await axiosConfig.post(`searchBlogs`,{value}, config);
   } catch (error) {
     console.log(error.message);
   }

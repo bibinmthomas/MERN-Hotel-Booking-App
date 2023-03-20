@@ -10,6 +10,8 @@ const {
   addReservation,
   confirmPayment,
   checkValidDates,
+  searchHotels,
+  searchBlogs,
 } = require("../controllers/userControllers");
 const {
   postBlog,
@@ -77,5 +79,6 @@ router.route("/create-payment-intent").post(async (req, res) => {
 });
 router.route("/confirmPayment").post(confirmPayment);
 router.route("/deleteReservation").post(protect,deleteReservation);
-
+router.route("/searchHotels").post(searchHotels)
+router.route("/searchBlogs").post(searchBlogs)
 module.exports = router;

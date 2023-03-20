@@ -11,6 +11,7 @@ import propertyWorkingReducer from "../features/property/propertyWorkingSlice";
 import reservationCreateReducer from "../features/reservation/reservationCreateSlice";
 import reservationCheckReducer from "../features/reservation/reservationCheckSlice";
 import reservationWorkingReducer from "../features/reservation/reservationWorkingSlice";
+import searchWorkingReducer from "../features/users/searchSlice";
 // import thunk from "redux-thunk";
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
     reservationCreate: reservationCreateReducer,
     reservationCheck: reservationCheckReducer,
     reservationWorking: reservationWorkingReducer,
+    searchWorking: searchWorkingReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

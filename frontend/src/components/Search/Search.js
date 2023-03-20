@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { searchWorkingSuccess } from "../../features/users/searchSlice";
+// import { searchBlogs, searchHotels } from "../../actions/userAction";
 
 function Search() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const options = ["Hotels", "Blogs"];
   const [value, setValue] = useState(options[0]);
   const [inputValue, setInputValue] = useState("");
@@ -13,15 +18,61 @@ function Search() {
   const { blogInfo } = blogData;
   const propertyData = useSelector((state) => state.propertyWorking);
   const { propertyInfo } = propertyData;
-  const optionsDetails = [];
 
+  const optionsDetails = [];
+  let searchData;
   useEffect(() => {
     if (value === "Hotels") {
       propertyInfo.map((item) => optionsDetails.push(item.propName));
     } else {
       blogInfo.map((item) => optionsDetails.push(item.blogTitle));
     }
-  }, [value, search]);
+  }, [value, search, searchInputValue]);
+
+  const submitSearch = () => {
+    if (value === "Hotels" && search === null && searchInputValue === "") {
+      navigate("/hotels");
+    } else if (
+      value === "Blogs" &&
+      search === null &&
+      searchInputValue === ""
+    ) {
+      navigate("/blogs");
+    } else if (value && (search !== null || searchInputValue.length !== 0)) {
+      if (value === "Hotels") {
+        console.log("hotel");
+        if (search !== null) {
+          searchData = search;
+        } else {
+          searchData = searchInputValue;
+        }
+        let filteredProducts = propertyInfo?.filter((product) => {
+          const regex = new RegExp(searchData, "i");
+          return regex.test(product.propName);
+        });
+        if (filteredProducts.length !== 0) {
+          console.log("filteredProducts:", filteredProducts);
+          dispatch(searchWorkingSuccess({filteredProducts,value}));
+        }
+      } else if (value === "Blogs") {
+        console.log("blog");
+        if (search !== null) {
+          searchData = search;
+        } else {
+          searchData = searchInputValue;
+        }
+        let filteredProducts = blogInfo?.filter((product) => {
+          const regex = new RegExp(searchData, "i");
+          return regex.test(product.blogTitle);
+        });
+        if (filteredProducts.length !== 0) {
+          console.log("filteredProducts:", filteredProducts);
+          dispatch(searchWorkingSuccess({filteredProducts,value}));
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div class="container mx-auto flex justify-center items-center p-2 md:p-0">
@@ -29,9 +80,6 @@ function Search() {
           {/* <div class="grid grid-cols-1 md:grid-cols-1 gap-4"> */}
           <div class="flex flex-col md:flex-row w-auto">
             <div>
-              {/* <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
-              <div>{`inputValue: '${inputValue}'`}</div>
-              <br /> */}
               <Autocomplete
                 value={value}
                 onChange={(event, newValue) => {
@@ -53,45 +101,29 @@ function Search() {
             <div class="">
               <div>
                 <Autocomplete
-                  value={search}
+                  value={searchInputValue}
                   onChange={(event, newValue) => {
                     setSearch(newValue);
                   }}
+                  id="free-solo-demo"
+                  freeSolo
+                  options={optionsDetails}
                   inputValue={searchInputValue}
                   onInputChange={(event, newInputValue) => {
                     setSearchInputValue(newInputValue);
                   }}
-                  id="controllable-states-demo"
-                  options={optionsDetails}
                   sx={{ width: 400 }}
                   renderInput={(params) => (
                     <TextField {...params} label="Search here..." />
                   )}
                 />
               </div>
-              {/*  */}
-              {/* <div class="flex border rounded bg-gray-300 items-center p-4 sm:w-96 ">
-                <svg
-                  class="fill-current text-gray-800 mr-2 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                >
-                  <path
-                    class="heroicon-ui"
-                    d="M14 5.62l-4 2v10.76l4-2V5.62zm2 0v10.76l4 2V7.62l-4-2zm-8 2l-4-2v10.76l4 2V7.62zm7 10.5L9.45 20.9a1 1 0 0 1-.9 0l-6-3A1 1 0 0 1 2 17V4a1 1 0 0 1 1.45-.9L9 5.89l5.55-2.77a1 1 0 0 1 .9 0l6 3A1 1 0 0 1 22 7v13a1 1 0 0 1-1.45.89L15 18.12z"
-                  />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Search here..."
-                  class="bg-gray-300 max-w-full focus:outline-none text-gray-700"
-                />
-              </div> */}
             </div>
             <div class="">
-              <button class="p-4 border rounded-md bg-gray-800 text-white">
+              <button
+                onClick={submitSearch}
+                class="p-4 border rounded-md bg-gray-800 text-white"
+              >
                 Search
               </button>
             </div>

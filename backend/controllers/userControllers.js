@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const Hotel = require("../models/hotelModel");
 const Blog = require("../models/blogModel");
 const Reservation = require("../models/reservationModel");
+const Property = require("../models/propertyModel")
 
 Date.prototype.addDays = function (days) {
   var dat = new Date(this.valueOf());
@@ -272,5 +273,15 @@ module.exports = {
     } else {
       res.json({ message: "No priors" });
     }
+  }),
+  searchHotels: asyncHandler(async (req, res) => {
+    const { value } = req.body;
+    console.log("value", value);
+    const allHotelData = Property.find()
+    
+  }),
+  searchBlogs: asyncHandler(async (req, res) => {
+    const { value } = req.body;
+    console.log("value", value);
   }),
 };
