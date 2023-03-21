@@ -23,7 +23,11 @@ const {
   postProperty,
   getProperty,
 } = require("../controllers/hostControllers");
-const { getUsers, getReservation, deleteReservation } = require("../controllers/adminControllers");
+const {
+  getUsers,
+  getReservation,
+  deleteReservation,
+} = require("../controllers/adminControllers");
 const protect = require("../middlewares/authUserMiddleware");
 //stripe implementation...
 const stripe = require("stripe")(
@@ -42,23 +46,23 @@ const router = express.Router();
 router.route("/getUsers").get(getUsers);
 router.route("/blogFetch").get(getBlogs);
 router.route("/propertyFetch").get(getProperty);
-router.route("/reservationFetch/").get(protect,getReservation);
+router.route("/reservationFetch/").get(protect, getReservation);
 router.route("/:id").get(getUserById);
 router.route("/register").post(registerUser);
 router.route("/login").post(authUser);
-router.route("/Newhost").post(protect,newHost);
-router.route("/updateProfile").post(protect,updateUserProfile);
+router.route("/Newhost").post(protect, newHost);
+router.route("/updateProfile").post(protect, updateUserProfile);
 
-router.route("/postBlog").post(protect,postBlog);
+router.route("/postBlog").post(protect, postBlog);
 router.route("/profileUpdate").post(updateUserProfile);
 router.route("/deleteBlog/:id").delete(deleteBlog);
 router.route("/editBlog").post(updateBlog);
 router.route("/addComment").post(addComment);
 router.route("/likeBlog").post(likeFunction);
-router.route("/postProperty").post(protect,postProperty);
+router.route("/postProperty").post(protect, postProperty);
 router.route("/editProperty").post();
 router.route("/deleteProperty").post();
-router.route("/postReservation").post(protect,addReservation);
+router.route("/postReservation").post(protect, addReservation);
 router.route("/checkValidDates").post(checkValidDates);
 router.route("/create-payment-intent").post(async (req, res) => {
   console.log(req.body);
@@ -78,7 +82,7 @@ router.route("/create-payment-intent").post(async (req, res) => {
   });
 });
 router.route("/confirmPayment").post(confirmPayment);
-router.route("/deleteReservation").post(protect,deleteReservation);
-router.route("/searchHotels").post(searchHotels)
-router.route("/searchBlogs").post(searchBlogs)
+router.route("/deleteReservation").post(protect, deleteReservation);
+router.route("/searchHotels").post(searchHotels);
+router.route("/searchBlogs").post(searchBlogs);
 module.exports = router;

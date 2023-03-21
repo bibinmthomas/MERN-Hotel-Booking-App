@@ -38,7 +38,6 @@ function HostRoutes() {
           userInfo?.role === "Hotel" ? (
             <HotelProfile />
           ) : (
-            // <UserProfile />
             <Navigate to="/user-profile" />
           )
         }

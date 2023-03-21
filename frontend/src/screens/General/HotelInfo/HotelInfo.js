@@ -97,6 +97,8 @@ function HotelInfo() {
           }
         }
         if (checkin.toString() === checkout.toString()) {
+          console.log(checkin.toString());
+          console.log(checkout.toString());
           toast.warn("dates same", {
             position: "top-center",
             autoClose: 5000,
@@ -107,17 +109,6 @@ function HotelInfo() {
             progress: undefined,
             theme: "light",
           });
-        } else if (checkin > checkout) {
-          // toast.error("dates messed up!!!", {
-          //   position: "top-center",
-          //   autoClose: 5000,
-          //   hideProgressBar: false,
-          //   closeOnClick: true,
-          //   pauseOnHover: true,
-          //   draggable: true,
-          //   progress: undefined,
-          //   theme: "light",
-          // });
         }
       }
       console.log(
@@ -177,6 +168,18 @@ function HotelInfo() {
         }
         console.log(totalPrice);
       }
+      if (checkin > checkout) {
+        toast.error("checkin > checkout dates messed up!!!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
   const handleCheckoutChange = (newValue) => {
@@ -190,6 +193,18 @@ function HotelInfo() {
           );
         }
         console.log(totalPrice);
+      }
+      if (checkout < checkin) {
+        toast.error("checkout < checkin dates messed up!!!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };
@@ -219,12 +234,26 @@ function HotelInfo() {
       guest
     );
     setOpen(!open);
-    var dateArray = getDates(checkin, checkout);
-    var id = propertyCurrent._id;
-    console.log("Before......");
-    await dispatch(checkValidDates(id, dateArray));
-    handleClose();
-    setToggle(true);
+    if (propertyCurrent?.roomTypes?.bedRoom < adultCount + elderCount) {
+      toast.warn("Too many Guests...", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      handleClose();
+    } else {
+      var dateArray = getDates(checkin, checkout);
+      var id = propertyCurrent._id;
+      console.log("Before......");
+      await dispatch(checkValidDates(id, dateArray));
+      handleClose();
+      setToggle(true);
+    }
   };
   const saveReservation = async (
     userId,
@@ -526,18 +555,6 @@ function HotelInfo() {
                                   label=""
                                   value={checkin}
                                   onChange={(obj) => {
-                                    if (checkin > checkout) {
-                                      toast.error("dates messed up!!!", {
-                                        position: "top-center",
-                                        autoClose: 5000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        progress: undefined,
-                                        theme: "light",
-                                      });
-                                    }
                                     handleCheckinChange(obj);
                                   }}
                                   renderInput={(params) => (

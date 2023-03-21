@@ -29,7 +29,7 @@ function UserRoutes() {
           userInfo?.role === "User" ? <UserProfile /> : <Navigate to="/" />
         }
       />
-            <Route
+      <Route
         path="user-profile/reservation/:id"
         element={
           userInfo?.role === "User" ? <Reservations /> : <Navigate to="/" />
