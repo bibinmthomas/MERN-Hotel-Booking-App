@@ -17,7 +17,7 @@ import {
   hotelCreateFail,
 } from "../features/hotels/hotelCreateSlice";
 
-import {searchWorkingSuccess} from "../features/users/searchSlice"
+import { searchWorkingSuccess } from "../features/users/searchSlice";
 
 import axiosConfig from "../axiosConfig";
 
@@ -55,44 +55,44 @@ export const logout = () => async (dispatch) => {
   dispatch(userLogout());
 };
 
-export const register = (name, email, phone, password) => async (dispatch) => {
-  try {
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-    dispatch(userRegisterReq());
-    console.log(name, email, phone, password);
+export const register =
+  (name, email, phone, password) => async (dispatch, getState) => {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      dispatch(userRegisterReq());
+      console.log(name, email, phone, password);
 
-    const { data } = await axiosConfig.post(
-      `/register`,
-      {
-        name,
-        email,
-        phone,
-        password,
-      },
-      config
-    );
+      const { data } = await axiosConfig.post(
+        `/register`,
+        {
+          name,
+          email,
+          phone,
+          password,
+        },
+        config
+      );
 
-    // console.log(data);
-    if (data.message) {
-      dispatch(userRegisterFail(data.message));
-    } else {
-      dispatch(userRegisterSuccess(data));
+      if (data.message) {
+        dispatch(userRegisterFail(data.message));
+      } else {
+        dispatch(userRegisterSuccess(data));
+      }
+      dispatch(userLoginSuccess(data));
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      const errorIs =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch(userRegisterFail(errorIs));
     }
-    dispatch(userLoginSuccess(data));
-
-    localStorage.setItem("userInfo", JSON.stringify(data));
-  } catch (error) {
-    const errorIs =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch(userRegisterFail(errorIs));
-  }
-};
+  };
 
 export const updateProfile = (user) => async (dispatch, getState) => {
   try {
@@ -185,7 +185,7 @@ export const searchHotels = (value) => async (dispatch) => {
       },
     };
     console.log("from Dispatch:", value);
-    const { data } = await axiosConfig.post(`searchHotels`,{value}, config);
+    const { data } = await axiosConfig.post(`searchHotels`, { value }, config);
   } catch (error) {
     console.log(error.message);
   }
@@ -198,7 +198,7 @@ export const searchBlogs = (value) => async (dispatch) => {
       },
     };
     console.log("from Dispatch:", value);
-    const { data } = await axiosConfig.post(`searchBlogs`,{value}, config);
+    const { data } = await axiosConfig.post(`searchBlogs`, { value }, config);
   } catch (error) {
     console.log(error.message);
   }

@@ -35,16 +35,16 @@ const Sidebar = ({ children }) => {
       name: "Properties Approvals",
       icon: <FaCommentAlt />,
     },
-    {
-      path: "/admin/blog-reports",
-      name: "Blog Reports",
-      icon: <FaShoppingBag />,
-    },
-    {
-      path: "/",
-      name:"Extra",
-      icon: <FaThList/>
-    },
+    // {
+    //   path: "/admin/blog-reports",
+    //   name: "Blog Reports",
+    //   icon: <FaShoppingBag />,
+    // },
+    // {
+    //   path: "/",
+    //   name: "Extra",
+    //   icon: <FaThList />,
+    // },
   ];
   return (
     <div className="container">
@@ -54,7 +54,7 @@ const Sidebar = ({ children }) => {
             Logo
           </h1>
           <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
-            <FaBars onClick={toggle} />
+            <FaBars color="white" onClick={toggle} />
           </div>
         </div>
         {menuItem.map((item, index) => (
@@ -74,7 +74,7 @@ const Sidebar = ({ children }) => {
           </NavLink>
         ))}
       </div>
-      <main>{children}</main>
+      <main className="max-h-screen overflow-auto">{children}</main>
     </div>
   );
 };

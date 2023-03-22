@@ -208,10 +208,10 @@ function AdminPropertyManagement() {
   const propertyData = useSelector((state) => state.propertyWorking);
   const { loading, propertyInfo } = propertyData;
 
-  React.useEffect(()=>{
-    dispatch(getPropDetails())
+  React.useEffect(() => {
+    dispatch(getPropDetails());
     console.log(propertyInfo);
-  },[])
+  }, []);
 
   const HandleBlocks = (_id) => {
     dispatch(propBlock(_id));
@@ -250,91 +250,109 @@ function AdminPropertyManagement() {
       {loading ? (
         <Loading />
       ) : (
-        <Box sx={{ width: "100%" }}>
-          <Paper sx={{ width: "100%", mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} />
-            <TableContainer>
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={"medium"}
-              >
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={propertyInfo?.length}
-                />
-                <TableBody>
-                  {stableSort(propertyInfo, getComparator(order, orderBy))
-                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    ?.map((row, index) => {
-                      const isItemSelected = isSelected(row.hostName);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+        <main class="">
+          <div class="grid mb-4 pb-10 px-8 mx-4 rounded-3xl bg-gray-100 border-4 border-green-400">
+            <div class="grid grid-cols-12 gap-6 mt-5">
+              <div class="grid col-span-12 gap-6 xxl:col-span-9">
+                <Box sx={{ width: "100%" }}>
+                  <Paper sx={{ width: "100%", mb: 2 }}>
+                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <TableContainer>
+                      <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby="tableTitle"
+                        size={"medium"}
+                      >
+                        <EnhancedTableHead
+                          numSelected={selected.length}
+                          order={order}
+                          orderBy={orderBy}
+                          onSelectAllClick={handleSelectAllClick}
+                          onRequestSort={handleRequestSort}
+                          rowCount={propertyInfo?.length}
+                        />
+                        <TableBody>
+                          {stableSort(
+                            propertyInfo,
+                            getComparator(order, orderBy)
+                          )
+                            ?.slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            ?.map((row, index) => {
+                              const isItemSelected = isSelected(row.hostName);
+                              const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.hostName}
-                          selected={isItemSelected}
-                        >
-                          <TableCell padding="checkbox"></TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                          >
-                            {row.propName}
-                          </TableCell>
-                          <TableCell align="right">{row.propType}</TableCell>
-                          <TableCell align="right">{row.hostName}</TableCell>
-                          <TableCell align="right">
-                            {row.propStatus ? (
-                              <DangerousIcon color="error" />
-                            ) : (
-                              <DoneOutlineIcon color="success" />
-                            )}
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              onClick={() => HandleBlocks(row._id)}
-                              variant="contained"
+                              return (
+                                <TableRow
+                                  hover
+                                  role="checkbox"
+                                  aria-checked={isItemSelected}
+                                  tabIndex={-1}
+                                  key={row.hostName}
+                                  selected={isItemSelected}
+                                >
+                                  <TableCell padding="checkbox"></TableCell>
+                                  <TableCell
+                                    component="th"
+                                    id={labelId}
+                                    scope="row"
+                                    padding="none"
+                                  >
+                                    {row.propName}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.propType}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.hostName}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.propStatus ? (
+                                      <DangerousIcon color="error" />
+                                    ) : (
+                                      <DoneOutlineIcon color="success" />
+                                    )}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    <Button
+                                      onClick={() => HandleBlocks(row._id)}
+                                      variant="contained"
+                                    >
+                                      {row.propStatus ? "UnBlock" : "Block"}
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          {emptyRows > 0 && (
+                            <TableRow
+                              style={{
+                                height: 53 * emptyRows,
+                              }}
                             >
-                              {row.propStatus ? "UnBlock" : "Block"}
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: 53 * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={propertyInfo?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Paper>
-        </Box>
+                              <TableCell colSpan={6} />
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 25]}
+                      component="div"
+                      count={propertyInfo?.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </Paper>
+                </Box>
+              </div>
+            </div>
+          </div>
+        </main>
       )}
     </>
   );

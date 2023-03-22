@@ -1,7 +1,7 @@
 *{
   margin:0;
   padding:0;
-  /* color: #FFF !important; */
+  /* color: #000; */
   text-decoration: none;
 }
 .container{
@@ -24,8 +24,11 @@ main{
   padding:20px 15px;
 }
 .logo{
-  color: #FFF !important;
+  color: #FFF ;
   font-size: 30px;
+}
+.MenuIcon{
+  color: #FFF;
 }
 .bars{
   display: flex;

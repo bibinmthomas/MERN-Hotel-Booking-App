@@ -17,6 +17,20 @@ import {
   userWorkingLoadingOff,
 } from "../features/users/userWorkingSlice";
 
+import {
+  adminStatsFail,
+  // adminStatsLoadingOff,
+  adminStatsReq,
+  adminStatsSuccess,
+} from "../features/admin/adminStatsSlice";
+
+import {
+  adminChartFail,
+  // adminChartLoadingOff,
+  adminChartReq,
+  adminChartSuccess,
+} from "../features/admin/adminChartSlice";
+
 import axiosConfig from "../axiosConfig";
 
 export const getUserDetails = () => async (dispatch) => {
@@ -152,5 +166,51 @@ export const propBlock = (_id) => async (dispatch) => {
         ? error.response.data.message
         : error.message;
     dispatch(hotelWorkingFail(errorIs));
+  }
+};
+export const getCounts = () => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    dispatch(adminStatsReq());
+    const { data } = await axiosConfig.get("/admin/fetchCounts", config);
+    console.log("Recieved from backend:", data);
+    dispatch(adminStatsSuccess(data));
+  } catch (error) {
+    const errorIs =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch(adminStatsFail(errorIs));
+  }
+};
+export const getChartStats = () => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    dispatch(adminChartReq());
+    const { data } = await axiosConfig.get("/admin/fetchCharts", config);
+    console.log("Recieved from backend:", data);
+    dispatch(adminChartSuccess(data));
+  } catch (error) {
+    const errorIs =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch(adminChartFail(errorIs));
   }
 };

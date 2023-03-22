@@ -6,10 +6,13 @@ const {
   hostBlock,
   propBlock,
   userBlock,
+  getCounts,
+  getChartData,
 } = require("../controllers/adminControllers");
 
 const router = express.Router();
-
+router.route("/fetchCounts").get(getCounts)
+router.route("/fetchCharts").get(getChartData)
 router.route("/user-management").get(getUsers);
 router.route("/hotel-management").get(getHotels);
 router.route("/property-management").get(getProps);

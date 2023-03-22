@@ -12,6 +12,8 @@ import reservationCreateReducer from "../features/reservation/reservationCreateS
 import reservationCheckReducer from "../features/reservation/reservationCheckSlice";
 import reservationWorkingReducer from "../features/reservation/reservationWorkingSlice";
 import searchWorkingReducer from "../features/users/searchSlice";
+import adminStatsRuducer from "../features/admin/adminStatsSlice";
+import adminChartReducer from "../features/admin/adminChartSlice";
 // import thunk from "redux-thunk";
 
 const store = configureStore({
@@ -29,6 +31,8 @@ const store = configureStore({
     reservationCheck: reservationCheckReducer,
     reservationWorking: reservationWorkingReducer,
     searchWorking: searchWorkingReducer,
+    adminStats: adminStatsRuducer,
+    adminChart: adminChartReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

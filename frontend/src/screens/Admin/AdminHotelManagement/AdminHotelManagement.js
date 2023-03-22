@@ -258,101 +258,113 @@ export default function EnhancedTable() {
       {loading ? (
         <Loading />
       ) : (
-        <Box sx={{ width: "100%" }}>
-          <Paper sx={{ width: "100%", mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} />
-            <TableContainer>
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={"medium"}
-              >
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={hostInfo?.length}
-                />
-                <TableBody>
-                  {stableSort(hostInfo, getComparator(order, orderBy))
-                    ?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                    ?.map((row, index) => {
-                      const isItemSelected = isSelected(row.hotelName);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+        <main class="">
+          <div class="grid mb-4 pb-10 px-8 mx-4 rounded-3xl bg-gray-100 border-4 border-green-400">
+            <div class="grid grid-cols-12 gap-6 mt-5">
+              <div class="grid col-span-12 gap-6 xxl:col-span-9">
+                <Box sx={{ width: "100%" }}>
+                  <Paper sx={{ width: "100%", mb: 2 }}>
+                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <TableContainer>
+                      <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby="tableTitle"
+                        size={"medium"}
+                      >
+                        <EnhancedTableHead
+                          numSelected={selected.length}
+                          order={order}
+                          orderBy={orderBy}
+                          onSelectAllClick={handleSelectAllClick}
+                          onRequestSort={handleRequestSort}
+                          rowCount={hostInfo?.length}
+                        />
+                        <TableBody>
+                          {stableSort(hostInfo, getComparator(order, orderBy))
+                            ?.slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            ?.map((row, index) => {
+                              const isItemSelected = isSelected(row.hotelName);
+                              const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.hotelName}
-                          selected={isItemSelected}
-                        >
-                          <TableCell padding="checkbox"></TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                          >
-                            {row.hotelName}
-                          </TableCell>
-                          <TableCell align="right">{row.adhaarno}</TableCell>
-                          <TableCell align="right">{row.user}</TableCell>
-                          <TableCell align="right">
-                            {row.blocked ? (
-                              <DangerousIcon color="error" />
-                            ) : (
-                              <DoneOutlineIcon color="success" />
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <IconButton>
-                              <a href={row.URL} target="_blank">
-                                <VisibilityIcon />
-                              </a>
-                            </IconButton>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              onClick={() => HandleBlocks(row.user)}
-                              variant="contained"
+                              return (
+                                <TableRow
+                                  hover
+                                  role="checkbox"
+                                  aria-checked={isItemSelected}
+                                  tabIndex={-1}
+                                  key={row.hotelName}
+                                  selected={isItemSelected}
+                                >
+                                  <TableCell padding="checkbox"></TableCell>
+                                  <TableCell
+                                    component="th"
+                                    id={labelId}
+                                    scope="row"
+                                    padding="none"
+                                  >
+                                    {row.hotelName}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.adhaarno}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.user}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.blocked ? (
+                                      <DangerousIcon color="error" />
+                                    ) : (
+                                      <DoneOutlineIcon color="success" />
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    <IconButton>
+                                      <a href={row.URL} target="_blank">
+                                        <VisibilityIcon />
+                                      </a>
+                                    </IconButton>
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    <Button
+                                      onClick={() => HandleBlocks(row.user)}
+                                      variant="contained"
+                                    >
+                                      {row.blocked ? "UnBlock" : "Block"}
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          {emptyRows > 0 && (
+                            <TableRow
+                              style={{
+                                height: 53 * emptyRows,
+                              }}
                             >
-                              {row.blocked ? "UnBlock" : "Block"}
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: 53 * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={hostInfo?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Paper>
-        </Box>
+                              <TableCell colSpan={6} />
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 25]}
+                      component="div"
+                      count={hostInfo?.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </Paper>
+                </Box>
+              </div>
+            </div>
+          </div>
+        </main>
       )}
     </>
   );
