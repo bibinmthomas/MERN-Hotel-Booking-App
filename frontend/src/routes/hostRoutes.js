@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { getHostDetails } from "../actions/adminAction";
 import Reservations from "../components/Reservations/Reservations";
 import HotelProfile from "../screens/Host/HostProfile/HotelProfile";
+import HotelReservations from "../screens/Host/HostProfile/HotelReservations";
 import NewHost from "../screens/User/NewHost/NewHost";
 import UserProfile from "../screens/User/UserProfile/UserProfile";
 
@@ -46,6 +47,12 @@ function HostRoutes() {
         path="hotel-profile/reservation/:id"
         element={
           userInfo?.role === "Hotel" ? <Reservations /> : <Navigate to="/" />
+        }
+      />
+      <Route
+        path="hotel-profile/reservations/:id"
+        element={
+          userInfo?.role === "Hotel" ? <HotelReservations /> : <Navigate to="/" />
         }
       />
     </Routes>

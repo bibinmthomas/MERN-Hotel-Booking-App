@@ -125,7 +125,28 @@ export const reservationFetch = (id) => async (dispatch, getState) => {
       },
     };
     await dispatch(reservationWorkingReq());
-    const { data } = await axiosConfig.get(`/reservationFetch/`, config);
+    const { data } = await axiosConfig.get(`/reservationFetch`, config);
+    console.log("Recieved from backend:", data);
+    await dispatch(reservationWorkingSuccess(data));
+    dispatch(reservationWorkingLoadingOff());
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const HostReservationFetch = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    console.log("in dispatch:", id);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await dispatch(reservationWorkingReq());
+    const { data } = await axiosConfig.get(`/HostReservationFetch`, config);
     console.log("Recieved from backend:", data);
     await dispatch(reservationWorkingSuccess(data));
     dispatch(reservationWorkingLoadingOff());

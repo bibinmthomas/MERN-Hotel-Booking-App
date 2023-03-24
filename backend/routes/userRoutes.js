@@ -27,6 +27,7 @@ const {
   getUsers,
   getReservation,
   deleteReservation,
+  getHostReservation,
 } = require("../controllers/adminControllers");
 const protect = require("../middlewares/authUserMiddleware");
 //stripe implementation...
@@ -47,6 +48,7 @@ router.route("/getUsers").get(getUsers);
 router.route("/blogFetch").get(getBlogs);
 router.route("/propertyFetch").get(getProperty);
 router.route("/reservationFetch/").get(protect, getReservation);
+router.route("/HostReservationFetch/").get(protect, getHostReservation);
 router.route("/:id").get(getUserById);
 router.route("/register").post(registerUser);
 router.route("/login").post(authUser);
@@ -76,7 +78,6 @@ router.route("/create-payment-intent").post(async (req, res) => {
       enabled: true,
     },
   });
-
   res.send({
     clientSecret: paymentIntent.client_secret,
   });

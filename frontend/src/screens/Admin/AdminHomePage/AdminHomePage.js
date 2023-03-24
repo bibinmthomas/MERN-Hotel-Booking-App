@@ -236,7 +236,7 @@ function AdminHomePage({ admin, setAdmin }) {
               </div>
               {/* charts end */}
               {/* table */}
-              <div class="col-span-12 mt-5">
+              {/* <div class="col-span-12 mt-5">
                 <div class="grid gap-2 grid-cols-1 lg:grid-cols-1">
                   <div class="bg-white p-4 shadow-lg rounded-lg">
                     <h1 class="font-bold text-base black">Latest Blogs</h1>
@@ -301,7 +301,7 @@ function AdminHomePage({ admin, setAdmin }) {
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
                                       <div class="flex space-x-4">
-                                        {/* <a
+                                        <a
                                           href="#"
                                           class="text-blue-500 hover:text-blue-600"
                                         >
@@ -320,7 +320,7 @@ function AdminHomePage({ admin, setAdmin }) {
                                             />
                                           </svg>
                                           <p>Edit</p>
-                                        </a> */}
+                                        </a>
                                         <a
                                           href="#"
                                           class="text-red-500 hover:text-red-600"
@@ -353,7 +353,7 @@ function AdminHomePage({ admin, setAdmin }) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* table end */}
             </div>
           </div>

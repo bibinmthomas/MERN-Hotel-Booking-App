@@ -3,6 +3,7 @@ import { Container } from "@mui/system";
 import { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import {
   deleteReservation,
   reservationFetch,
@@ -29,6 +30,7 @@ function Reservations() {
   const { propertyInfo } = propertyData;
   const [refresh, setRefresh] = useState(false);
   const [current, setCurrent] = useState();
+  const [clientSecret, setClientSecret] = useState();
 
   useEffect(() => {
     if (refresh) {
@@ -36,6 +38,7 @@ function Reservations() {
     }
     dispatch(reservationFetch(id));
     setCurrent(id);
+    console.log("clientSecret:", clientSecret);
     console.log("id:", current);
   }, [refresh]);
 
@@ -43,6 +46,23 @@ function Reservations() {
     console.log(item);
     setCurrent(item);
     setOpen(true);
+  };
+  const storeCurrent = (item) => {
+    setCurrent(item);
+  };
+  const handleRefund = (cost) => {
+    if (clientSecret) {
+      toast.success(`${cost} Refund Sent!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleClose = () => {
@@ -258,6 +278,20 @@ function Reservations() {
   return (
     <div>
       <Container sx={{ marginTop: "5rem" }}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
         {dialog}
         {reservationLoading ? (
           <Loading />
@@ -278,97 +312,123 @@ function Reservations() {
                       </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
-                      {reservationInfo.map((item, index) => {
-                        return (
-                          <tr class="border-b border-gray-200 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left whitespace-nowrap">
-                              <div class="flex items-center">
-                                <span class="font-medium">
-                                  {propertyInfo.map((obj) => {
-                                    if (obj._id === item.propId)
-                                      return obj.propName;
-                                  })}
-                                </span>
-                              </div>
-                            </td>
-                            <td class="py-3 px-6 text-left">
-                              <div class="flex items-center">
-                                <div class="mr-2">
-                                  <img
-                                    class="w-6 h-6 rounded-full"
-                                    src={userInfo.pic}
-                                    alt="LOL"
-                                  />
-                                </div>
-                                <span>{userInfo.name}</span>
-                              </div>
-                            </td>
-                            <td class="py-3 px-6 text-center">
-                              <div class="flex items-center justify-center">
-                                <span>{item.totalPrice}</span>
-                              </div>
-                            </td>
-                            <td class="py-3 px-6 text-center">
-                              {item.paymentStatus ? (
-                                <span class="bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs">
-                                  Scheduled
-                                </span>
-                              ) : (
-                                <span class="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
-                                  Pending
-                                </span>
-                              )}
-                            </td>
-                            <td class="py-3 px-6 text-center">
-                              <div class="flex item-center justify-center">
-                                <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                  <svg
-                                    onClick={() => {
-                                      handleClickOpen(item);
-                                    }}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    />
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    />
-                                  </svg>
-                                </div>
-                                <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                  <svg
-                                    onClick={() => {
-                                      dispatch(deleteReservation(item));
-                                      setRefresh(!refresh);
-                                    }}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                      {Object.keys(reservationInfo).length !== 0 ? (
+                        <>
+                          {reservationInfo.map((item, index) => {
+                            return (
+                              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">
+                                  <div class="flex items-center">
+                                    <span class="font-medium">
+                                      {propertyInfo.map((obj) => {
+                                        if (obj._id === item.propId)
+                                          return obj.propName;
+                                      })}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td class="py-3 px-6 text-left">
+                                  <div class="flex items-center">
+                                    <div class="mr-2">
+                                      <img
+                                        class="w-6 h-6 rounded-full"
+                                        src={userInfo.pic}
+                                        alt="LOL"
+                                      />
+                                    </div>
+                                    <span>{userInfo.name}</span>
+                                  </div>
+                                </td>
+                                <td class="py-3 px-6 text-center">
+                                  <div class="flex items-center justify-center">
+                                    <span>{item.totalPrice}</span>
+                                  </div>
+                                </td>
+                                <td class="py-3 px-6 text-center">
+                                  {item.paymentStatus ? (
+                                    <span class="bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs">
+                                      Scheduled
+                                    </span>
+                                  ) : (
+                                    <span class="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
+                                      Pending
+                                    </span>
+                                  )}
+                                </td>
+                                <td class="py-3 px-6 text-center">
+                                  <div class="flex item-center justify-center">
+                                    <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                      <svg
+                                        onClick={() => {
+                                          handleClickOpen(item);
+                                        }}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                      <svg
+                                        onClick={async () => {
+                                          storeCurrent(item);
+                                          // await fetch("/create-refund-intent", {
+                                          //   method: "POST",
+                                          //   headers: {
+                                          //     "Content-Type":
+                                          //       "application/json",
+                                          //   },
+                                          //   body: JSON.stringify({
+                                          //     totalPrice: item.totalPrice,
+                                          //     _id: item._id,
+                                          //   }),
+                                          // })
+                                          //   .then((res) => res.json())
+                                          //   .then((data) =>
+                                          //     setClientSecret(data.clientSecret)
+                                          //   );
+                                          await dispatch(
+                                            reservationCreateSuccess(item)
+                                          );
+                                          navigate("/payments");
+                                          setRefresh(!refresh);
+                                          dispatch(deleteReservation(item));
+                                        }}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <p>No Reservations Made</p>
+                      )}
                       {/* </div> */}
                       {/* )} */}
                     </tbody>

@@ -41,10 +41,13 @@ const reservationSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    paymentStatus:{
-      type:Boolean,
-      default:false
-    }
+    paymentIntent: {
+      type: Object,
+    },
+    paymentStatus: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

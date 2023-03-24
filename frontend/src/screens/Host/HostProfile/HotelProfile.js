@@ -99,9 +99,6 @@ function HotelProfile() {
         ["clean"],
         [{ align: [] }],
       ],
-      // handlers: {
-      //   image: imageHandler,
-      // },
     },
     clipboard: {
       matchVisual: false,
@@ -479,42 +476,71 @@ function HotelProfile() {
               </div>
               {/* edit profile END*/}
               {/* View Reservations */}
-              <div class="lg:px-24 md:px-44 px-4 flex flex-row items-center justify-center md:gap-28 gap-16">
-                <div class="xl:pt-24 w-full xl:w-1/2 relative pb-12 lg:pb-0">
-                  <div class="relative">
-                    <div class="absolute">
-                      <div class="">
-                        <h1 class="my-2 text-gray-800 font-bold text-2xl">
-                          Check Your Reservations
-                        </h1>
-                        <p class="my-2 text-gray-800">Browse your Trips.</p>
-                        <button
-                          onClick={() => {
-                            navigate(`reservation/${userInfo._id}`);
-                          }}
-                          class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50"
-                        >
-                          Click Here!
-                        </button>
+              <Grid container alignContent={"center"}>
+                <Grid item xs={6}>
+                  <div class="lg:px-4 md:px-44 px-4 flex flex-row items-center justify-center md:gap-28 gap-16">
+                    <div class="xl:pt-4 w-full xl:w-1/2 relative pb-12 lg:pb-0">
+                      <div class="relative">
+                        <div class="">
+                          <div class="">
+                            <h1 class="my-2 text-gray-800 font-bold text-2xl">
+                              Check Your Reservations
+                            </h1>
+                            <p class="my-2 text-gray-800">Browse your Trips.</p>
+                            <button
+                              onClick={() => {
+                                navigate(`reservation/${userInfo._id}`);
+                              }}
+                              class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50"
+                            >
+                              Click Here!
+                            </button>
+                          </div>
+                        </div>
+                        {/* <div className="">
+                          <img
+                            src="https://www.freepnglogos.com/uploads/cloud-png/white-big-cloud-png-27.png"
+                            alt=""
+                          />
+                        </div> */}
                       </div>
                     </div>
-                    <div className="">
-                      <img
-                        src="https://www.freepnglogos.com/uploads/cloud-png/white-big-cloud-png-27.png"
-                        alt=""
-                      />
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div class="lg:px-4 md:px-44 px-4 flex flex-row items-center justify-center md:gap-28 gap-16">
+                    <div class="xl:pt-4 w-full xl:w-1/2 relative pb-12 lg:pb-0">
+                      <div class="relative">
+                        <div class="">
+                          <div class="">
+                            <h1 class="my-2 text-gray-800 font-bold text-2xl">
+                              Check Your Properties Reservations
+                            </h1>
+                            <p class="my-2 text-gray-800">Browse User Trips.</p>
+                            <button
+                              onClick={() => {
+                                navigate(`reservations/${userInfo._id}`);
+                              }}
+                              class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50"
+                            >
+                              Click Here!
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
+                </Grid>
+              </Grid>
               {/* View Reservations End */}
             </Grid>
-
+            <Grid xs={12}>
+              <br />
+            </Grid>
             {host.blocked ? null : (
               <>
                 {/* Create Blog */}
-                <Grid item xs={2}>
+                <Grid item xs={12}>
                   <Typography display="inline" variant="h5">
                     Create Blog
                   </Typography>

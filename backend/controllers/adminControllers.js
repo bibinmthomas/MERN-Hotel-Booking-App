@@ -32,6 +32,22 @@ module.exports = {
     const reservation = await Reservation.find({ userId: req.user._id });
     res.json(reservation);
   }),
+  getHostReservation: asyncHandler(async (req, res) => {
+    var hostReservation = [];
+    const propertyData = await Property.find({ hostId: req.user._id });
+    const reservation = await Reservation.find({ userId: req.user._id });
+    if (propertyData && reservation) {
+      propertyData.map((item, index) => {
+        reservation.map((obj) => {
+          if (obj.propId.toString() === item._id.toString()) {
+            console.log(obj.propId);
+            hostReservation.push(obj);
+          }
+        });
+      });
+    }
+    res.json(hostReservation);
+  }),
   getHotels: asyncHandler(async (req, res) => {
     const hotelUsers = await User.find({ role: "Hotel" });
     if (hotelUsers === []) {
